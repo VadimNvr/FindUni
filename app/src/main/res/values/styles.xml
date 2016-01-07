@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
+        <item name="colorPrimary">@color/material_drawer_primary</item>
+        <item name="material_drawer_selected_text">#4dc26c</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+</resources>
