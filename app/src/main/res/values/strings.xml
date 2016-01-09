@@ -8,6 +8,7 @@
     <string name="screen_unis_title">ВУЗы</string>
     <string name="screen_olymps_title">Олимпиады</string>
     <string name="screen_colledges_title">Колледжи</string>
+    <string name="screen_filters_title">Фильтры</string>
 
     <string name="drawer_main_sec1_text">ВУЗы</string>
     <string name="drawer_main_sec2_text">Колледжи</string>

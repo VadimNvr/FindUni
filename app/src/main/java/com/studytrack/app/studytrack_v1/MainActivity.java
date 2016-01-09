@@ -1,8 +1,8 @@
 package com.studytrack.app.studytrack_v1;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -19,13 +20,14 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private enum Screen { UNIS, OLYMPS, COLLEDGES }
+    private enum Screen { UNIS, OLYMPS, COLLEGES, UNIS_FILTER }
 
     HashMap<Screen, myFragment> frags;
     FragmentManager fragmentManager;
@@ -41,14 +43,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fragmentManager = getSupportFragmentManager();
+
         initToolBar();
         initFragments();
         initDrawer();
 
-        fragmentManager = getSupportFragmentManager();
-
         renderScreen(Screen.UNIS);
-        screen = Screen.UNIS;
     }
 
     private void initDrawer()
@@ -79,17 +80,14 @@ public class MainActivity extends AppCompatActivity {
                             case 1:
                                 renderToolbar(Screen.UNIS);
                                 renderScreen(Screen.UNIS);
-                                screen = Screen.UNIS;
                                 break;
                             case 2:
-                                renderToolbar(Screen.COLLEDGES);
-                                renderScreen(Screen.COLLEDGES);
-                                screen = Screen.COLLEDGES;
+                                renderToolbar(Screen.COLLEGES);
+                                renderScreen(Screen.COLLEGES);
                                 break;
                             case 3:
                                 renderToolbar(Screen.OLYMPS);
                                 renderScreen(Screen.OLYMPS);
-                                screen = Screen.OLYMPS;
                                 break;
                             default:
                                 Toast.makeText(ctx, "Coming soon", Toast.LENGTH_SHORT).show();
@@ -101,15 +99,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
+        ImageView headerImg = (ImageView) drawer.getHeader().findViewById(R.id.drawer_header_img);
+        Picasso.with(this).load(R.drawable.face).into(headerImg);
     }
 
     private void initFragments()
     {
-        Log.d("myFragments", "INIT FRAGMENTS");
-        frags = new HashMap<Screen, myFragment>();
+        frags = new HashMap<>();
         frags.put(Screen.UNIS, new SearchFragment());
-        frags.put(Screen.COLLEDGES, new StartFragment());
+        frags.put(Screen.COLLEGES, new CollegesFragment());
         frags.put(Screen.OLYMPS, new OlympsFragment());
+        frags.put(Screen.UNIS_FILTER, new FilterFragment());
 
         myFragment curFrag = frags.get(Screen.UNIS);
         ArrayList<UniListItem> search_items = new ArrayList<>();
@@ -121,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("uni_array", search_items);
         curFrag.putData(bundle);
-        //curFrag.Refresh();
     }
 
     private void initToolBar()
@@ -141,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         filterMenuItem = menu.findItem(R.id.action_filter);
-        //filterMenuItem.setIcon(R.mipmap.ic_filter);
-        //filterMenuItem.setIcon(getResources().getDrawable(FontAwesome.Icon.faw_filter));
 
         renderToolbar(Screen.UNIS);
         return true;
@@ -157,14 +155,20 @@ public class MainActivity extends AppCompatActivity {
                 toolbar.setTitle(R.string.screen_unis_title);
                 break;
 
-            case COLLEDGES:
+            case COLLEGES:
                 filterMenuItem.setVisible(false);
                 toolbar.setTitle(R.string.screen_colledges_title);
                 break;
 
             case OLYMPS:
-                filterMenuItem.setVisible(true);
+                filterMenuItem.setVisible(false);
                 toolbar.setTitle(R.string.screen_olymps_title);
+                break;
+
+            case UNIS_FILTER:
+                toolbar.setNavigationIcon(R.mipmap.ic_arrow_left);
+                filterMenuItem.setVisible(false);
+                toolbar.setTitle(R.string.screen_filters_title);
         }
 
     }
@@ -174,11 +178,15 @@ public class MainActivity extends AppCompatActivity {
         if ((screen != null) && (screen == screen_nxt))
             return;
 
-        Fragment nextFrag = frags.get(screen_nxt);
+        FragmentTransaction trans = fragmentManager.beginTransaction();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.main_fragment, nextFrag)
-                .commit() ;
+        if (screen_nxt == Screen.UNIS_FILTER)
+            trans.addToBackStack(null);
+
+        trans.replace(R.id.main_fragment, frags.get(screen_nxt));
+        trans.commit();
+
+        screen = screen_nxt;
     }
 
     @Override
@@ -189,15 +197,14 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        Toast.makeText(ctx, "Coming soon", Toast.LENGTH_SHORT).show();
-
-        return super.onOptionsItemSelected(item);
-
         //noinspection SimplifiableIfStatement
-        //if (id == R.id.action_filter) {
-
-            //return true;
-        //}
+        if (id == R.id.action_filter) {
+            drawer.getDrawerItem(0).withSetSelected(false);
+            renderToolbar(Screen.UNIS_FILTER);
+            renderScreen(Screen.UNIS_FILTER);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

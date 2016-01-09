@@ -8,6 +8,10 @@
     <color name="colorPrimary">#01a500</color>
     <color name="drawer_face_clr">#58c849</color>
     <color name="drawer_face_username_clr">#e8e8e8</color>
+    <color name="banana">#FFCC00</color>
 
     <color name="toolbar_text_clr">#ffffff</color>
+
+    <color name="pos_dialog_btn_clr">#00f972</color>
+    <color name="neg_dialog_btn_clr">#f60067</color>
 </resources>
