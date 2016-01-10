@@ -23,4 +23,7 @@
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
     <string name="toolbar_filter">Фильтры</string>
+
+    <string name="filter">Фильтры</string>
+    <string name="sort">Сортировать</string>
 </resources>

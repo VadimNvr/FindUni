@@ -1,16 +1,28 @@
 package com.studytrack.app.studytrack_v1;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -20,14 +32,16 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.search.material.library.MaterialSearchView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private enum Screen { UNIS, OLYMPS, COLLEGES, UNIS_FILTER }
+    private enum Screen {UNIS, OLYMPS, COLLEGES}
 
     HashMap<Screen, myFragment> frags;
     FragmentManager fragmentManager;
@@ -37,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Drawer drawer;
     private MenuItem filterMenuItem;
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
         initFragments();
         initDrawer();
 
-        renderScreen(Screen.UNIS);
+        screen = Screen.UNIS;
+        renderScreen();
     }
 
-    private void initDrawer()
-    {
+    private void initDrawer() {
         drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .withActionBarDrawerToggle(true)
+                .withActionBarDrawerToggleAnimated(true)
                 .withTranslucentStatusBar(false)
                 .withHeader(R.layout.drawer_header)
                 .withShowDrawerOnFirstLaunch(true)
@@ -75,19 +90,21 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Log.d("myFragments", Integer.toString(position));
+                        //if (drawerItem.isSelected())
+                          //  return true;
+
                         switch (position) {
                             case 1:
-                                renderToolbar(Screen.UNIS);
-                                renderScreen(Screen.UNIS);
+                                screen = Screen.UNIS;
+                                renderScreen();
                                 break;
                             case 2:
-                                renderToolbar(Screen.COLLEGES);
-                                renderScreen(Screen.COLLEGES);
+                                screen = Screen.COLLEGES;
+                                renderScreen();
                                 break;
                             case 3:
-                                renderToolbar(Screen.OLYMPS);
-                                renderScreen(Screen.OLYMPS);
+                                screen = Screen.OLYMPS;
+                                renderScreen();
                                 break;
                             default:
                                 Toast.makeText(ctx, "Coming soon", Toast.LENGTH_SHORT).show();
@@ -100,17 +117,17 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build();
 
+        ActionBarDrawerToggle toggle = drawer.getActionBarDrawerToggle();
+
         ImageView headerImg = (ImageView) drawer.getHeader().findViewById(R.id.drawer_header_img);
         Picasso.with(this).load(R.drawable.face).into(headerImg);
     }
 
-    private void initFragments()
-    {
+    private void initFragments() {
         frags = new HashMap<>();
         frags.put(Screen.UNIS, new SearchFragment());
         frags.put(Screen.COLLEGES, new CollegesFragment());
         frags.put(Screen.OLYMPS, new OlympsFragment());
-        frags.put(Screen.UNIS_FILTER, new FilterFragment());
 
         myFragment curFrag = frags.get(Screen.UNIS);
         ArrayList<UniListItem> search_items = new ArrayList<>();
@@ -124,10 +141,11 @@ public class MainActivity extends AppCompatActivity {
         curFrag.putData(bundle);
     }
 
-    private void initToolBar()
-    {
+    private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
+
+        MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -140,80 +158,37 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+
+        //MenuItem item = menu.findItem(R.id.action_search);
+
+        //searchView.setMenuItem(item);
         filterMenuItem = menu.findItem(R.id.action_filter);
 
-        renderToolbar(Screen.UNIS);
+        //renderToolbar(Screen.UNIS);
         return true;
     }
 
-    private void renderToolbar(Screen screen_nxt)
-    {
-        switch (screen_nxt)
-        {
-            case UNIS:
-                filterMenuItem.setVisible(true);
-                toolbar.setTitle(R.string.screen_unis_title);
-                break;
+    private void renderScreen() {
 
-            case COLLEGES:
-                filterMenuItem.setVisible(false);
-                toolbar.setTitle(R.string.screen_colledges_title);
-                break;
-
-            case OLYMPS:
-                filterMenuItem.setVisible(false);
-                toolbar.setTitle(R.string.screen_olymps_title);
-                break;
-
-            case UNIS_FILTER:
-                toolbar.setNavigationIcon(R.mipmap.ic_arrow_left);
-                filterMenuItem.setVisible(false);
-                toolbar.setTitle(R.string.screen_filters_title);
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
         }
-
-    }
-
-    private void renderScreen(Screen screen_nxt)
-    {
-        if ((screen != null) && (screen == screen_nxt))
-            return;
 
         FragmentTransaction trans = fragmentManager.beginTransaction();
-
-        if (screen_nxt == Screen.UNIS_FILTER)
-            trans.addToBackStack(null);
-
-        trans.replace(R.id.main_fragment, frags.get(screen_nxt));
+        trans.replace(R.id.main_fragment, frags.get(screen));
         trans.commit();
-
-        screen = screen_nxt;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_filter) {
-            drawer.getDrawerItem(0).withSetSelected(false);
-            renderToolbar(Screen.UNIS_FILTER);
-            renderScreen(Screen.UNIS_FILTER);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed(){
-        if(drawer.isDrawerOpen()){
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen()) {
             drawer.closeDrawer();
         }
-        else{
-            super.onBackPressed();
+        else if (!frags.get(screen).onBackPressed()) {
+            if (fragmentManager.getBackStackEntryCount() == 0)
+                drawer.openDrawer();
+            else
+                super.onBackPressed();
         }
     }
 }

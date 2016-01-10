@@ -17,4 +17,8 @@ public class myFragment extends Fragment {
     public void Refresh()
     {
     }
+
+    public boolean onBackPressed() {
+        return false;
+    }
 }

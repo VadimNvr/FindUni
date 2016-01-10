@@ -24,4 +24,19 @@
     <dimen name="filter_expandable_group_height">60dp</dimen>
     <dimen name="filter_expandable_item_height">50dp</dimen>
     <dimen name="filter_expandable_view_height">300dp</dimen>
+
+    <!-- FAB -->
+    <dimen name="fab_spacing">20dp</dimen>
+    <dimen name="fab_elevation">4dp</dimen>
+    <dimen name="fab_hide_distance">100dp</dimen>
+
+    <!-- FAB Sheet -->
+    <dimen name="keyline_spacing">20dp</dimen>
+    <dimen name="sheet_width">210dp</dimen>
+    <dimen name="sheet_spacing">20dp</dimen>
+    <dimen name="sheet_item_spacing">@dimen/keyline_spacing</dimen>
+    <dimen name="sheet_item_image_spacing">24dp</dimen>
+    <dimen name="sheet_item_textsize">16sp</dimen>
+    <dimen name="fab_sheet_elevation">4dp</dimen>
+
 </resources>
