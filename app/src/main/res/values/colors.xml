@@ -4,9 +4,10 @@
     <color name="drawer_item_icon_clr">#828282</color>
     <color name="drawer_background_clr">#ffffff</color>
     <color name="drawer_divider_clr">#e6e6e6</color>
+    <color name="divider_clr">#d6dbdc</color>
 
     <color name="backgroundColorPrimary">#ffffff</color>
-    <color name="textColorPrimaryDark">#000</color>
+    <color name="textColorPrimaryDark">#555555</color>
 
     <color name="colorPrimary">#2dbf5b</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
@@ -15,6 +16,7 @@
     <color name="drawer_face_clr">@color/colorAccent</color>
     <color name="drawer_face_username_clr">#e8e8e8</color>
     <color name="banana">#FFCC00</color>
+    <color name="banana_accent">#ffee55</color>
     <color name="fab_color">@color/banana</color>
 
     <color name="toolbar_text_clr">#ffffff</color>

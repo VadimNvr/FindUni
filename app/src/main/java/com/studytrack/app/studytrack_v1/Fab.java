@@ -17,7 +17,7 @@ import com.gordonwong.materialsheetfab.AnimatedFab;
  */
 public class Fab extends FloatingActionButton implements AnimatedFab {
 
-    private static final int FAB_ANIM_DURATION = 100;
+    private static final int FAB_ANIM_DURATION = 200;
 
     public Fab(Context context) {
         super(context);

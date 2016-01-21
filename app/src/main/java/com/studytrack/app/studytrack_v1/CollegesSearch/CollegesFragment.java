@@ -1,4 +1,4 @@
-package com.studytrack.app.studytrack_v1;
+package com.studytrack.app.studytrack_v1.CollegesSearch;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.studytrack.app.studytrack_v1.R;
+import com.studytrack.app.studytrack_v1.myFragment;
 
 /**
  * Created by vadim on 03.01.16.
@@ -37,5 +39,10 @@ public class CollegesFragment extends myFragment {
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_filter).setVisible(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Колледжи");
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }

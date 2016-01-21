@@ -26,4 +26,6 @@
 
     <string name="filter">Фильтры</string>
     <string name="sort">Сортировать</string>
+
+    <string name="univ_list_filename">ulist.dat</string>
 </resources>

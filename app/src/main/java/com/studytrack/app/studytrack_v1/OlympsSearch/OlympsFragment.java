@@ -1,4 +1,4 @@
-package com.studytrack.app.studytrack_v1;
+package com.studytrack.app.studytrack_v1.OlympsSearch;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.studytrack.app.studytrack_v1.R;
+import com.studytrack.app.studytrack_v1.myFragment;
 
 /**
  * Created by vadim on 03.01.16.
@@ -34,5 +37,10 @@ public class OlympsFragment extends myFragment {
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_filter).setVisible(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Олимпиады");
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }

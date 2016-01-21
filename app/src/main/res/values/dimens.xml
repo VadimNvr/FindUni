@@ -19,7 +19,7 @@
     <dimen name="toolbar_back_btn_size">32dp</dimen>
 
     <dimen name="uni_list_item_height">120dp</dimen>
-    <dimen name="uni_list_item_image_size">90dp</dimen>
+    <dimen name="uni_list_item_image_size">70dp</dimen>
 
     <dimen name="filter_expandable_group_height">60dp</dimen>
     <dimen name="filter_expandable_item_height">50dp</dimen>
@@ -27,7 +27,7 @@
 
     <!-- FAB -->
     <dimen name="fab_spacing">20dp</dimen>
-    <dimen name="fab_elevation">4dp</dimen>
+    <dimen name="fab_elevation">2dp</dimen>
     <dimen name="fab_hide_distance">100dp</dimen>
 
     <!-- FAB Sheet -->

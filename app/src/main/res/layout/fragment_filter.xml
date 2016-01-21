@@ -6,6 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
+
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
@@ -17,21 +23,17 @@
         app:pstsTabTextStyle="bold"
         app:pstsTabTextAllCaps="true"
         app:pstsTabTextColor="@color/toolbar_text_clr"
-        app:pstsTabTextSize="14sp"
-        />
+        app:pstsTabTextSize="14sp" />
 
-    <View
-        android:id="@+id/toolbar_shadow"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@drawable/toolbar_dropshadow"
-        android:layout_below="@+id/tabs" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tabs">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="40dp"
+        android:text="ПРИНЯТЬ ФИЛЬТРЫ"
+        android:id="@+id/accept_filters"
+        android:layout_alignParentBottom="true"
+        android:background="@color/banana_accent"
+        android:gravity="center"
+        android:textColor="@color/textColorPrimaryDark"
+        android:alpha="0.8" />
 
 </RelativeLayout>

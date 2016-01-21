@@ -1,28 +1,16 @@
 package com.studytrack.app.studytrack_v1;
 
-import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -32,26 +20,25 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.search.material.library.MaterialSearchView;
 import com.squareup.picasso.Picasso;
+import com.studytrack.app.studytrack_v1.CollegesSearch.CollegesFragment;
+import com.studytrack.app.studytrack_v1.OlympsSearch.OlympsFragment;
+import com.studytrack.app.studytrack_v1.UniversitySearch.SearchFragment;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private enum Screen {UNIS, OLYMPS, COLLEGES}
 
-    HashMap<Screen, myFragment> frags;
+    protected HashMap<Screen, myFragment> frags;
     FragmentManager fragmentManager;
 
     private Context ctx = this;
-    private Screen screen;
     private Toolbar toolbar;
     private Drawer drawer;
-    private MenuItem filterMenuItem;
-    private MaterialSearchView searchView;
+    private myFragment curFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         initFragments();
         initDrawer();
 
-        screen = Screen.UNIS;
+        curFrag = new SearchFragment();
         renderScreen();
     }
 
@@ -90,29 +77,41 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        //if (drawerItem.isSelected())
-                          //  return true;
 
                         switch (position) {
                             case 1:
-                                screen = Screen.UNIS;
+                                curFrag = new SearchFragment();
                                 renderScreen();
                                 break;
                             case 2:
-                                screen = Screen.COLLEGES;
+                                curFrag = new CollegesFragment();
                                 renderScreen();
                                 break;
                             case 3:
-                                screen = Screen.OLYMPS;
+                                curFrag = new OlympsFragment();
                                 renderScreen();
                                 break;
                             default:
                                 Toast.makeText(ctx, "Coming soon", Toast.LENGTH_SHORT).show();
-
                                 return true;
                         }
                         drawer.closeDrawer();
                         return true;
+                    }
+                })
+                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+                    @Override
+                    public void onDrawerClosed(View view) {
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View view) {
+
+                    }
+
+                    @Override
+                    public void onDrawerSlide(View view, float v) {
+
                     }
                 })
                 .build();
@@ -128,24 +127,11 @@ public class MainActivity extends AppCompatActivity {
         frags.put(Screen.UNIS, new SearchFragment());
         frags.put(Screen.COLLEGES, new CollegesFragment());
         frags.put(Screen.OLYMPS, new OlympsFragment());
-
-        myFragment curFrag = frags.get(Screen.UNIS);
-        ArrayList<UniListItem> search_items = new ArrayList<>();
-        for (int i = 0; i < 20; ++i)
-            search_items.add(new UniListItem("Московский государственный университет имени М.В. Ломоносова",
-                    R.mipmap.ic_launcher,
-                    "Россия, Москва", 87.7f));
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("uni_array", search_items);
-        curFrag.putData(bundle);
     }
 
     private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
-
-        MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -158,25 +144,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
-
-        //MenuItem item = menu.findItem(R.id.action_search);
-
-        //searchView.setMenuItem(item);
-        filterMenuItem = menu.findItem(R.id.action_filter);
-
-        //renderToolbar(Screen.UNIS);
         return true;
     }
 
     private void renderScreen() {
 
-        while (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStackImmediate();
-        }
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        FragmentTransaction trans = fragmentManager.beginTransaction();
-        trans.replace(R.id.main_fragment, frags.get(screen));
-        trans.commit();
+        fragmentManager.beginTransaction()
+            .replace(R.id.main_fragment, curFrag)
+            .commit();
     }
 
     @Override
@@ -184,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen()) {
             drawer.closeDrawer();
         }
-        else if (!frags.get(screen).onBackPressed()) {
+        else if (!curFrag.onBackPressed()) {
             if (fragmentManager.getBackStackEntryCount() == 0)
                 drawer.openDrawer();
             else
