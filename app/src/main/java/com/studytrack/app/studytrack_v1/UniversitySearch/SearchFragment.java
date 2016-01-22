@@ -233,23 +233,6 @@ public class SearchFragment extends myFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-/*
-            listItems = new ArrayList<>();
-
-            for (int univ_id = 0; univ_id < 20; ++univ_id) {
-                listItems.add(new RecyclerItem(
-                                R.drawable.msu_logo,
-                                "Московский государственный университет им. М.В. Ломоносова",
-                                "Москва",
-                                "250 000р.",
-                                87.7f)
-                );
-            }
-            return null;
-            */
-
-            //Loading from memory
-            //listItems = (ArrayList<RecyclerItem>) SerializeObject.ReadSettings(activity, "ulist.dat");
             if (listItems == null) {
                 listItems = new ArrayList<>();
             }
