@@ -7,11 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.studytrack.app.studytrack_v1.R;
+import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
 
 /**
  * Created by vadim on 18.01.16.
  */
-public class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
+public class RecyclerItemViewHolder extends RecyclerView.ViewHolder{
     public TextView name;
     public ImageView logo;
     public TextView location;

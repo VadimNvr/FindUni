@@ -23,10 +23,24 @@ android {
             dirs 'libs'
         }
     }
+
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res/layouts/university_info',
+                    'src/main/res/layouts/other',
+                    'src/main/res/layouts',
+                    'src/main/res'
+            ]
+        }
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.github.rey5137:material:1.2.2'
+    compile 'com.github.kanytu:android-parallax-recyclerview:v1.5'
+    compile 'com.github.johnkil.android-robototextview:robototextview:2.4.3'
     compile 'com.gordonwong:material-sheet-fab:1.2.1'
     compile 'com.jpardogo.materialtabstrip:library:1.1.0'
     compile 'com.android.support:appcompat-v7:22.2.1'
@@ -34,6 +48,7 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
     compile('com.mikepenz:materialdrawer:4.6.3@aar') {
         transitive = true
     }
@@ -41,4 +56,5 @@ dependencies {
         transitive = true
     }
     compile(name: 'material-search', ext: 'aar')
+    compile files('libs/mpandroidchartlibrary-2-1-6.jar')
 }

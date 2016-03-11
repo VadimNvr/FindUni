@@ -10,19 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.search.material.library.MaterialSearchView;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Adapters.MainPagerAdapter;
 import com.studytrack.app.studytrack_v1.R;
-import com.studytrack.app.studytrack_v1.SearchAdapter;
-import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Cities;
-import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Scores;
-import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Specialities;
-import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Studies;
 import com.studytrack.app.studytrack_v1.myFragment;
 
 /**
@@ -94,7 +85,7 @@ public class FilterFragment extends myFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
-        toolbar = getActivity().findViewById(R.id.toolbar_actionbar);
+        toolbar = getActivity().findViewById(R.id.main_toolbar);
 
         // Initialize the ViewPager and set an adapter
         ViewPager pager = (ViewPager) view.findViewById(R.id.pager);

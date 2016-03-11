@@ -1,5 +1,7 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch;
 
+import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
+
 import java.io.Serializable;
 
 /**

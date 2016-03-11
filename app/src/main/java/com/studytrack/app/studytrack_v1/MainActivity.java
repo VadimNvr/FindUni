@@ -1,13 +1,11 @@
 package com.studytrack.app.studytrack_v1;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,14 +23,11 @@ import com.studytrack.app.studytrack_v1.CollegesSearch.CollegesFragment;
 import com.studytrack.app.studytrack_v1.OlympsSearch.OlympsFragment;
 import com.studytrack.app.studytrack_v1.UniversitySearch.SearchFragment;
 
-import java.io.File;
-import java.util.HashMap;
-
 public class MainActivity extends AppCompatActivity {
 
-    private enum Screen {UNIS, OLYMPS, COLLEGES}
+    //private enum Screen {UNIS, OLYMPS, COLLEGES}
 
-    protected HashMap<Screen, myFragment> frags;
+    //protected HashMap<Screen, myFragment> frags;
     FragmentManager fragmentManager;
 
     private Context ctx = this;
@@ -123,15 +118,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFragments() {
-        frags = new HashMap<>();
-        frags.put(Screen.UNIS, new SearchFragment());
-        frags.put(Screen.COLLEGES, new CollegesFragment());
-        frags.put(Screen.OLYMPS, new OlympsFragment());
+        //frags = new HashMap<>();
+        //frags.put(Screen.UNIS, new SearchFragment());
+        //frags.put(Screen.COLLEGES, new CollegesFragment());
+        //frags.put(Screen.OLYMPS, new OlympsFragment());
     }
 
     private void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */

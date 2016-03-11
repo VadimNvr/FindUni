@@ -22,13 +22,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_HEADER = 2;
     private static final int TYPE_ITEM = 1;
     private List<RecyclerItem> universities;
-    Typeface typeface, typeface_light;
+    private View.OnClickListener item_listener;
 
-    public RecyclerAdapter(Activity _activity, List<RecyclerItem> _universities) {
+    public RecyclerAdapter(Activity _activity, List<RecyclerItem> _universities, View.OnClickListener ocl) {
         universities = _universities;
-        typeface = Typeface.createFromAsset(_activity.getAssets(), "fonts/Roboto-Regular.ttf");
-        typeface_light = Typeface.createFromAsset(_activity.getAssets(), "fonts/Roboto-Light.ttf");
         context = _activity;
+        item_listener = ocl;
     }
 
     @Override
@@ -40,9 +39,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         else {
             View v = LayoutInflater.from(context).inflate(R.layout.unisearch_list_item, parent, false);
-            ((TextView) v.findViewById(R.id.location_title)).setTypeface(typeface_light);
-            ((TextView) v.findViewById(R.id.cost_title)).setTypeface(typeface_light);
-            ((TextView) v.findViewById(R.id.mark_title)).setTypeface(typeface_light);
+            v.setOnClickListener(item_listener);
             return new RecyclerItemViewHolder(v);
         }
     }
@@ -58,13 +55,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.average_mark.setText(Float.toString(uni.getMark()));
             Picasso.with(context).load(uni.getIconId()).into(holder.logo);
             holder.cost.setText(uni.getCost());
-
-
-            holder.name.setTypeface(typeface, Typeface.BOLD);
-            holder.location.setTypeface(typeface, Typeface.BOLD);
-            holder.cost.setTypeface(typeface, Typeface.BOLD);
-            holder.average_mark.setTypeface(typeface, Typeface.BOLD);
-            //viewHolder.average_mark.setTypeface(typeface_light, Typeface.NORMAL);
         }
     }
 

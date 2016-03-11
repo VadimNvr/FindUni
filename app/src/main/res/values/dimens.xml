@@ -27,7 +27,7 @@
 
     <!-- FAB -->
     <dimen name="fab_spacing">20dp</dimen>
-    <dimen name="fab_elevation">2dp</dimen>
+    <dimen name="fab_elevation">1dp</dimen>
     <dimen name="fab_hide_distance">100dp</dimen>
 
     <!-- FAB Sheet -->
@@ -38,5 +38,18 @@
     <dimen name="sheet_item_image_spacing">24dp</dimen>
     <dimen name="sheet_item_textsize">16sp</dimen>
     <dimen name="fab_sheet_elevation">4dp</dimen>
+
+    <!-- University header -->
+    <dimen name="university_header_height">320dp</dimen>
+    <dimen name="university_logo_mini_width">35dp</dimen>
+    <dimen name="university_logo_big_width">100dp</dimen>
+    <dimen name="university_logo_spacing_normal">16dp</dimen>
+    <dimen name="university_logo_mini_padding">55dp</dimen>
+
+    <!-- University title -->
+    <dimen name="university_title_height">120dp</dimen>
+    <dimen name="university_title_icon_size">80dp</dimen>
+
+    <dimen name="barchart_height">90dp</dimen>
 
 </resources>
