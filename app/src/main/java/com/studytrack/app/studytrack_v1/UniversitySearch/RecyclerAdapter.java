@@ -48,13 +48,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int pos) {
         if (!isPositionHeader(pos)) {
             RecyclerItem uni = universities.get(pos-1);
+
             RecyclerItemViewHolder holder = (RecyclerItemViewHolder) viewHolder;
             holder.name.setText(uni.getName());
             holder.location.setText(uni.getLocation());
-            holder.average_mark.setText(uni.getViewableMark());
-            // TODO: 14.03.2016 address image in local storage 
+            holder.average_mark.setText(Float.toString(uni.getMark()));
             Picasso.with(context).load(uni.getIconId()).into(holder.logo);
-            holder.cost.setText(uni.getViewableCost());
+            holder.cost.setText(uni.getCost());
         }
     }
 

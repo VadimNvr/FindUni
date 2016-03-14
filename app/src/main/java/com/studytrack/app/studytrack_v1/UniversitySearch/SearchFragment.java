@@ -210,7 +210,6 @@ public class SearchFragment extends myFragment {
         }
         */
 
-        // TODO: 14.03.2016 rewrite
         private void writeJSONtoDB(JSONArray data, SQLiteDatabase db) {
             try {
                 if (data == null)
@@ -222,17 +221,9 @@ public class SearchFragment extends myFragment {
 
                     row.put("id", univ.getString("name").hashCode());
                     row.put("name", univ.getString("name"));
-                    row.put("city", univ.getString("town"));
-                    // TODO: 14.03.2016 Исправить на Int
-
-                    String score = univ.getString("mean_point");
-                    String price = univ.getString("mean_price");
-                    if (score.equals("null")) {
-                        score = "-";
-                        price = "-";
-                    }
-                    row.put("score", score);
-                    row.put("price", price);
+                    row.put("city", "Москва");
+                    row.put("score", 81.1);
+                    row.put("price", 250000);
 
                     db.insert("university_table", null, row);
                 }

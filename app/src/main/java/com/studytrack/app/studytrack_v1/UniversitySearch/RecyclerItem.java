@@ -1,7 +1,5 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch;
 
-import android.graphics.drawable.Drawable;
-
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
 
 import java.io.Serializable;
@@ -11,12 +9,11 @@ import java.io.Serializable;
  */
 public class RecyclerItem implements Serializable {
     private String name;
-    int iconId;
+    private int iconId;
     private String location;
     private String cost;
     private float average_mark;
 
-    // TODO: 14.03.2016 rewrite 
     public RecyclerItem(int _iconId, String _name, String _location, String _cost, float _average_mark)
     {
         name = _name;
@@ -33,23 +30,6 @@ public class RecyclerItem implements Serializable {
     public String getLocation() { return location; }
 
     public String getCost() { return cost; }
-
-    public String getViewableMark() {
-        if (this.average_mark == 0.0) {
-            return "-";
-        } else {
-            return Float.toString(average_mark);
-        }
-
-    }
-
-    public String getViewableCost() {
-        if (cost.equals("0")) {
-            return "-";
-        } else {
-            return cost;
-        }
-    }
 
     public float getMark() { return average_mark; }
 }
