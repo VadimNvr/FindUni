@@ -19,6 +19,8 @@
         <ImageView
             android:layout_width="@dimen/uni_list_item_image_size"
             android:layout_height="@dimen/uni_list_item_image_size"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
             android:id="@+id/logo"
             android:src="@drawable/msu_logo" />
 

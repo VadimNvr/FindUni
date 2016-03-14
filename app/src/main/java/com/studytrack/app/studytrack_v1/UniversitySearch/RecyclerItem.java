@@ -1,9 +1,5 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch;
 
-import android.graphics.drawable.Drawable;
-
-import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
-
 import java.io.Serializable;
 
 /**
@@ -11,6 +7,7 @@ import java.io.Serializable;
  */
 public class RecyclerItem implements Serializable {
     private String name;
+    // TODO: 14.03.2016 replace with string path of file 
     int iconId;
     private String location;
     private String cost;

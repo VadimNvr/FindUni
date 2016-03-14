@@ -2,16 +2,16 @@ package com.studytrack.app.studytrack_v1.UniversitySearch;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.studytrack.app.studytrack_v1.R;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -53,7 +53,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.location.setText(uni.getLocation());
             holder.average_mark.setText(uni.getViewableMark());
             // TODO: 14.03.2016 address image in local storage 
-            Picasso.with(context).load(uni.getIconId()).into(holder.logo);
+           // Picasso.with(context).load(uni.getIconId()).into(holder.logo);
+            File image = new File("/data/data/com.studytrack.app.studytrack_v1/files/1457985423306.jpeg");
+            Log.i("Ex", Boolean.toString(image.exists()));
+            Picasso.with(context).load(image).into(holder.logo);
             holder.cost.setText(uni.getViewableCost());
         }
     }

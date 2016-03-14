@@ -5,13 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,26 +22,20 @@ import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.rey.material.widget.ProgressView;
 import com.studytrack.app.studytrack_v1.Fab;
 import com.studytrack.app.studytrack_v1.R;
-import com.studytrack.app.studytrack_v1.SerializeObject;
 import com.studytrack.app.studytrack_v1.StudyTrackApplication;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.FilterFragment;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniversityFragment;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
-import com.studytrack.app.studytrack_v1.Utils.DBHelper;
 import com.studytrack.app.studytrack_v1.Utils.JSONloader;
 import com.studytrack.app.studytrack_v1.myFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Currency;
+
+import Services.ImageService;
 
 /**
  * Created by vadim on 03.01.16.
@@ -224,9 +216,9 @@ public class SearchFragment extends myFragment {
                     row.put("name", univ.getString("name"));
                     row.put("city", univ.getString("town"));
                     // TODO: 14.03.2016 Исправить на Int
-
                     String score = univ.getString("mean_point");
                     String price = univ.getString("mean_price");
+                    ImageService.saveToFileFromUrl(getContext(), "http://promvesti-vrn.ru/sites/default/files/%D0%B2%D0%B3%D1%83.jpeg");
                     if (score.equals("null")) {
                         score = "-";
                         price = "-";
