@@ -3,7 +3,6 @@ package com.studytrack.app.studytrack_v1.Utils;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by vadim on 31.01.16.
@@ -16,12 +15,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE university_table ("
+        db.execSQL("CREATE TABLE university ("
                 + "id INTEGER PRIMARY KEY,"
                 + "name TEXT,"
                 + "city TEXT,"
                 + "score REAL,"
                 + "price INTEGER,"
+                + "logo_path TEXT"
                 + "isloaded INTEGER DEFAULT 0,"
                 + "isfavourite INTEGER DEFAULT 0,"
                 + "site TEXT DEFAULT NULL,"

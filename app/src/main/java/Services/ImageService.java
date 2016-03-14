@@ -42,7 +42,7 @@ public class ImageService {
             InputStream is = conn.getInputStream();
             Bitmap bm = BitmapFactory.decodeStream(is);
             subPath =  System.currentTimeMillis()+".jpeg";
-            resultPath = context.getFilesDir().getAbsolutePath() + subPath;
+            resultPath = context.getFilesDir().getAbsolutePath() + "/" + subPath;
             FileOutputStream fos = context.openFileOutput(subPath, Context.MODE_PRIVATE);
 
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
@@ -54,9 +54,10 @@ public class ImageService {
             fos.close();
         } catch(Exception e) {
             Log.i("SHIITT", e.toString());
+            return "";
         }
         Log.i("Path",resultPath);
-        File file = new File(context.getFilesDir().getAbsolutePath(), subPath);
+        File file = new File(context.getFilesDir().getAbsolutePath(), "/" + subPath);
         Log.i("Path11", file.getPath());
         Log.i("Exists", Boolean.toString(file.exists()));
         return resultPath;

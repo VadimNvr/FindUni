@@ -129,9 +129,10 @@ public class SearchFragment extends myFragment {
             JSONloader loader = new JSONloader();
             listItems = new ArrayList<>();
             SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
+
             Cursor cursor = db.query(
-                    "university_table",
-                    new String[] {"name", "city", "score", "price"},
+                    "university",
+                    new String[] {"name", "city", "score", "price","logo_path"},
                     null, null, null, null, null);
 
 
@@ -142,8 +143,8 @@ public class SearchFragment extends myFragment {
 
                 cursor.close();
                 cursor = db.query(
-                        "university_table",
-                        new String[] {"name", "city", "score", "price"},
+                        "university",
+                        new String[] {"name", "city", "score", "price","logo_path"},
                         null, null, null, null, null);
             }
 
@@ -160,10 +161,11 @@ public class SearchFragment extends myFragment {
                 int cityIndex  = cursor.getColumnIndex("city");
                 int scoreIndex = cursor.getColumnIndex("score");
                 int priceIndex = cursor.getColumnIndex("price");
+                int logoIndex = cursor.getColumnIndex("logo_path");
 
                 do {
                     listItems.add(new RecyclerItem(
-                            logos[cursor.getPosition() % 5],
+                            cursor.getString(logoIndex),
                             cursor.getString(nameIndex),
                             cursor.getString(cityIndex),
                             Integer.toString(cursor.getInt(priceIndex)),
@@ -218,15 +220,16 @@ public class SearchFragment extends myFragment {
                     // TODO: 14.03.2016 Исправить на Int
                     String score = univ.getString("mean_point");
                     String price = univ.getString("mean_price");
-                    ImageService.saveToFileFromUrl(getContext(), "http://promvesti-vrn.ru/sites/default/files/%D0%B2%D0%B3%D1%83.jpeg");
+
+                    String path = ImageService.saveToFileFromUrl(getContext(), univ.getString("logo_url"));
                     if (score.equals("null")) {
                         score = "-";
                         price = "-";
                     }
                     row.put("score", score);
                     row.put("price", price);
-
-                    db.insert("university_table", null, row);
+                    row.put("logo_path", path);
+                    db.insert("university", null, row);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

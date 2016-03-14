@@ -29,12 +29,6 @@ import com.studytrack.app.studytrack_v1.myFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -205,8 +199,8 @@ public class UniversityFragment extends myFragment
             Log.d("Test", Long.toString(rowId));
 
             SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
-            Cursor cursor = db.query("university_table",
-                    new String[] {"id", "isloaded", "isfavourite", "address", "phone", "site"},
+            Cursor cursor = db.query("university",
+                    new String[] {"id", "isloaded", "isfavourite", "site", "address", "phone"},
                     "id = " + Long.toString(rowId),
                     null, null, null, null);
 

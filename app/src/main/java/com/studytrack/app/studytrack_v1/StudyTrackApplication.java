@@ -3,7 +3,6 @@ package com.studytrack.app.studytrack_v1;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.studytrack.app.studytrack_v1.Utils.DBHelper;
 
@@ -22,8 +21,9 @@ public class StudyTrackApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        deleteDatabase("mainDB");
+        //deleteDatabase("mainDB");
         DBHelper dbHelper = new DBHelper(this);
+
         database = dbHelper.getWritableDatabase();
     }
 

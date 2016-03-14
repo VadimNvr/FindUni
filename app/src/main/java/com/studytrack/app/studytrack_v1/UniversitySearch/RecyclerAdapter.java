@@ -52,11 +52,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.name.setText(uni.getName());
             holder.location.setText(uni.getLocation());
             holder.average_mark.setText(uni.getViewableMark());
-            // TODO: 14.03.2016 address image in local storage 
-           // Picasso.with(context).load(uni.getIconId()).into(holder.logo);
-            File image = new File("/data/data/com.studytrack.app.studytrack_v1/files/1457985423306.jpeg");
+            File image = new File(uni.getIconId());
+            Log.i("PathEx",uni.getIconId());
             Log.i("Ex", Boolean.toString(image.exists()));
-            Picasso.with(context).load(image).into(holder.logo);
+            // TODO: 15.03.2016 переделать на норм лого если нет лого
+            if(image.exists()) {
+                Picasso.with(context).load(image).resize(300, 300).into(holder.logo);
+            }
+            else {
+                Picasso.with(context).load(R.drawable.mgimo_logo).resize(300, 300).into(holder.logo);
+            }
             holder.cost.setText(uni.getViewableCost());
         }
     }

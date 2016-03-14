@@ -8,13 +8,13 @@ import java.io.Serializable;
 public class RecyclerItem implements Serializable {
     private String name;
     // TODO: 14.03.2016 replace with string path of file 
-    int iconId;
+    String iconId;
     private String location;
     private String cost;
     private float average_mark;
 
     // TODO: 14.03.2016 rewrite 
-    public RecyclerItem(int _iconId, String _name, String _location, String _cost, float _average_mark)
+    public RecyclerItem(String _iconId, String _name, String _location, String _cost, float _average_mark)
     {
         name = _name;
         iconId = _iconId;
@@ -25,7 +25,7 @@ public class RecyclerItem implements Serializable {
 
     public String getName() { return name; }
 
-    public int getIconId() { return iconId; }
+    public String getIconId() { return iconId; }
 
     public String getLocation() { return location; }
 
