@@ -5,11 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,20 +24,26 @@ import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.rey.material.widget.ProgressView;
 import com.studytrack.app.studytrack_v1.Fab;
 import com.studytrack.app.studytrack_v1.R;
+import com.studytrack.app.studytrack_v1.SerializeObject;
 import com.studytrack.app.studytrack_v1.StudyTrackApplication;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.FilterFragment;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniversityFragment;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
+import com.studytrack.app.studytrack_v1.Utils.DBHelper;
 import com.studytrack.app.studytrack_v1.Utils.JSONloader;
 import com.studytrack.app.studytrack_v1.myFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-
-import Services.ImageService;
+import java.util.Currency;
 
 /**
  * Created by vadim on 03.01.16.
@@ -129,10 +137,9 @@ public class SearchFragment extends myFragment {
             JSONloader loader = new JSONloader();
             listItems = new ArrayList<>();
             SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
-
             Cursor cursor = db.query(
-                    "university",
-                    new String[] {"name", "city", "score", "price","logo_path"},
+                    "university_table",
+                    new String[] {"name", "city", "score", "price"},
                     null, null, null, null, null);
 
 
@@ -143,8 +150,8 @@ public class SearchFragment extends myFragment {
 
                 cursor.close();
                 cursor = db.query(
-                        "university",
-                        new String[] {"name", "city", "score", "price","logo_path"},
+                        "university_table",
+                        new String[] {"name", "city", "score", "price"},
                         null, null, null, null, null);
             }
 
@@ -161,11 +168,10 @@ public class SearchFragment extends myFragment {
                 int cityIndex  = cursor.getColumnIndex("city");
                 int scoreIndex = cursor.getColumnIndex("score");
                 int priceIndex = cursor.getColumnIndex("price");
-                int logoIndex = cursor.getColumnIndex("logo_path");
 
                 do {
                     listItems.add(new RecyclerItem(
-                            cursor.getString(logoIndex),
+                            logos[cursor.getPosition() % 5],
                             cursor.getString(nameIndex),
                             cursor.getString(cityIndex),
                             Integer.toString(cursor.getInt(priceIndex)),
@@ -204,7 +210,6 @@ public class SearchFragment extends myFragment {
         }
         */
 
-        // TODO: 14.03.2016 rewrite
         private void writeJSONtoDB(JSONArray data, SQLiteDatabase db) {
             try {
                 if (data == null)
@@ -216,20 +221,11 @@ public class SearchFragment extends myFragment {
 
                     row.put("id", univ.getString("name").hashCode());
                     row.put("name", univ.getString("name"));
-                    row.put("city", univ.getString("town"));
-                    // TODO: 14.03.2016 Исправить на Int
-                    String score = univ.getString("mean_point");
-                    String price = univ.getString("mean_price");
+                    row.put("city", "Москва");
+                    row.put("score", 81.1);
+                    row.put("price", 250000);
 
-                    String path = ImageService.saveToFileFromUrl(getContext(), univ.getString("logo_url"));
-                    if (score.equals("null")) {
-                        score = "-";
-                        price = "-";
-                    }
-                    row.put("score", score);
-                    row.put("price", price);
-                    row.put("logo_path", path);
-                    db.insert("university", null, row);
+                    db.insert("university_table", null, row);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
