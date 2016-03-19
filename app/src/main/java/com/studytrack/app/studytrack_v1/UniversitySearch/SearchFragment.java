@@ -1,8 +1,5 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -22,20 +19,22 @@ import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.rey.material.widget.ProgressView;
 import com.studytrack.app.studytrack_v1.Fab;
 import com.studytrack.app.studytrack_v1.R;
-import com.studytrack.app.studytrack_v1.StudyTrackApplication;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.FilterFragment;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniversityFragment;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
-import com.studytrack.app.studytrack_v1.Utils.JSONloader;
 import com.studytrack.app.studytrack_v1.myFragment;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import Services.ImageService;
+import Entities.Region;
+import Entities.Town;
+import Entities.University;
+import Requests.GetRegionsRequest;
+import Requests.GetTownsRequest;
+import Requests.GetUniversitiesRequest;
 
 /**
  * Created by vadim on 03.01.16.
@@ -67,7 +66,7 @@ public class SearchFragment extends myFragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new FragmentLoader().execute();
+        new FragmentLoader(true).execute();
     }
 
     @Override
@@ -109,7 +108,12 @@ public class SearchFragment extends myFragment {
     }
 
     private class FragmentLoader extends AsyncTask<Void, Void, Void> {
-        private ArrayList<RecyclerItem> listItems;
+        private ArrayList<RecyclerItem> listItems = new ArrayList<>();
+        private boolean loadFavorite;
+        GetUniversitiesRequest request;
+        public FragmentLoader(boolean loadFavorite) {
+            this.loadFavorite = loadFavorite;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -121,120 +125,53 @@ public class SearchFragment extends myFragment {
             initSheetFab();
             initRecycler();
             initProgress();
+
+            GetRegionsRequest regionsRequest = new GetRegionsRequest(activity);
+            regionsRequest.execute();
+            List<Region> regions = null;
+            try {
+                regions = regionsRequest.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            GetTownsRequest townsRequest = new GetTownsRequest(activity, regions.get(0));
+            townsRequest.execute();
+            List<Town> towns = null;
+            try {
+                towns = townsRequest.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            this.request = new GetUniversitiesRequest(activity, towns.get(0),0,10);
+            this.request.execute();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-
-            JSONloader loader = new JSONloader();
-            listItems = new ArrayList<>();
-            SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
-
-            Cursor cursor = db.query(
-                    "university",
-                    new String[] {"name", "city", "score", "price","logo_path"},
-                    null, null, null, null, null);
-
-
-            if (!cursor.moveToFirst()) {
-
-                JSONArray data = loader.fromHTTP("http://finduniv.appspot.com/getUniversities", "count=20");
-                writeJSONtoDB(data, db);
-
-                cursor.close();
-                cursor = db.query(
-                        "university",
-                        new String[] {"name", "city", "score", "price","logo_path"},
-                        null, null, null, null, null);
-            }
-
-            if (cursor.moveToFirst()) {
-                int[] logos = new int[] {
-                        R.drawable.msu_logo,
-                        R.drawable.vse_logo,
-                        R.drawable.mipt_logo,
-                        R.drawable.mgimo_logo,
-                        R.drawable.lingv_logo
-                };
-
-                int nameIndex  = cursor.getColumnIndex("name");
-                int cityIndex  = cursor.getColumnIndex("city");
-                int scoreIndex = cursor.getColumnIndex("score");
-                int priceIndex = cursor.getColumnIndex("price");
-                int logoIndex = cursor.getColumnIndex("logo_path");
-
-                do {
-                    listItems.add(new RecyclerItem(
-                            cursor.getString(logoIndex),
-                            cursor.getString(nameIndex),
-                            cursor.getString(cityIndex),
-                            Integer.toString(cursor.getInt(priceIndex)),
-                            cursor.getFloat(scoreIndex)));
-
-                } while (cursor.moveToNext());
-            }
-            return null;
-        }
-
-        /*
-        private JSONArray getJSONfromHTTP() {
+            List<University> universities = null;
             try {
-                URL url = new URL("http://finduniv.appspot.com/getUniversities?count=20");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setDoInput(true);
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null)
-                    buffer.append(line);
-
-                urlConnection.disconnect();
-
-                return new JSONArray(buffer.toString());
-            } catch (Exception e) {
+                universities = this.request.get();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-                return  null;
-            }
-        }
-        */
-
-        // TODO: 14.03.2016 rewrite
-        private void writeJSONtoDB(JSONArray data, SQLiteDatabase db) {
-            try {
-                if (data == null)
-                    return;
-
-                for (int id = 0; id < data.length(); ++id) {
-                    JSONObject univ = data.getJSONObject(id);
-                    ContentValues row = new ContentValues();
-
-                    row.put("id", univ.getString("name").hashCode());
-                    row.put("name", univ.getString("name"));
-                    row.put("city", univ.getString("town"));
-                    // TODO: 14.03.2016 Исправить на Int
-                    String score = univ.getString("mean_point");
-                    String price = univ.getString("mean_price");
-
-                    String path = ImageService.saveToFileFromUrl(getContext(), univ.getString("logo_url"));
-                    if (score.equals("null")) {
-                        score = "-";
-                        price = "-";
-                    }
-                    row.put("score", score);
-                    row.put("price", price);
-                    row.put("logo_path", path);
-                    db.insert("university", null, row);
-                }
-            } catch (Exception e) {
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+            for (University university: universities) {
+                listItems.add(new RecyclerItem(
+                        university.getLogoPath(),
+                        university.getName(),
+                        university.getTown().getName(),
+                        university.getMeanPrice(),
+                        university.getMeanPoints()
+                ));
+            }
+             return null;
         }
+
 
         @Override
         protected void onPostExecute(Void result) {
