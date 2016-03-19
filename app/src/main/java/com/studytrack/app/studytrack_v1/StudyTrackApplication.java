@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.studytrack.app.studytrack_v1.Utils.DBHelper;
+import Services.LocalDataBaseManager.DBHelper;
 
 /**
  * Created by vadim on 31.01.16.

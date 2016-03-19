@@ -199,19 +199,22 @@ public class UniversityFragment extends myFragment
             Log.d("Test", Long.toString(rowId));
 
             SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
-            Cursor cursor = db.query("university",
-                    new String[] {"id", "isloaded", "isfavourite", "site", "address", "phone"},
-                    "id = " + Long.toString(rowId),
-                    null, null, null, null);
-
-            if (cursor.moveToFirst()) {
-                int isloaded = cursor.getInt(cursor.getColumnIndex("isloaded"));
-                cursor.close();
-
-                if (isloaded == 0) {
-                    updateInfo(rowId, db);
+            Cursor cursor = db.rawQuery("Select * from university where university.name = " + "'" + uniData.getName() + "';", null);
+            
+            if(cursor.moveToFirst()) {
+                for (int i = 0; i <cursor.getColumnCount(); i++) {
+                    Log.i("db", cursor.getColumnName(i) + cursor.getString(i));
                 }
 
+            }
+            if (cursor.moveToFirst()) {
+//                int isloaded = cursor.getInt(cursor.getColumnIndex("isloaded"));
+//                cursor.close();
+//
+//                if (isloaded == 0) {
+//                    updateInfo(rowId, db);
+//                }
+                // TODO: 16.03.2016 rewrite
                 readInfo(uniData, db, rowId);
             }
 
@@ -254,8 +257,8 @@ public class UniversityFragment extends myFragment
         }
 
         private void readInfo(UniData data, SQLiteDatabase db, long Id) {
-
-            Cursor cursor = db.query("university_table",
+            // TODO: 16.03.2016 УБРАТЬ НАХУЙ ОТ СЮДА
+            Cursor cursor = db.query("university",
                     new String[] {"id", "isloaded", "isfavourite", "address", "phone", "site"},
                     "id = " + Long.toString(Id),
                     null, null, null, null);

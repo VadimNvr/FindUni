@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -53,13 +52,11 @@ public class ImageService {
             fos.write(byteArray);
             fos.close();
         } catch(Exception e) {
-            Log.i("SHIITT", e.toString());
             return "";
         }
-        Log.i("Path",resultPath);
+
         File file = new File(context.getFilesDir().getAbsolutePath(), "/" + subPath);
-        Log.i("Path11", file.getPath());
-        Log.i("Exists", Boolean.toString(file.exists()));
+
         return resultPath;
     }
 

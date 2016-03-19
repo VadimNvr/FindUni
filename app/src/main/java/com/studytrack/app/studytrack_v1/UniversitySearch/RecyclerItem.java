@@ -10,11 +10,11 @@ public class RecyclerItem implements Serializable {
     // TODO: 14.03.2016 replace with string path of file 
     String iconId;
     private String location;
-    private String cost;
-    private float average_mark;
+    private double cost;
+    private double average_mark;
 
     // TODO: 14.03.2016 rewrite 
-    public RecyclerItem(String _iconId, String _name, String _location, String _cost, float _average_mark)
+    public RecyclerItem(String _iconId, String _name, String _location, double _cost, double _average_mark)
     {
         name = _name;
         iconId = _iconId;
@@ -29,24 +29,24 @@ public class RecyclerItem implements Serializable {
 
     public String getLocation() { return location; }
 
-    public String getCost() { return cost; }
+    public Double getCost() { return cost; }
 
     public String getViewableMark() {
         if (this.average_mark == 0.0) {
             return "-";
         } else {
-            return Float.toString(average_mark);
+            return Double.toString(average_mark);
         }
 
     }
 
     public String getViewableCost() {
-        if (cost.equals("0")) {
+        if (Double.toString(cost).equals("0.0")) {
             return "-";
         } else {
-            return cost;
+            return Double.toString(cost);
         }
     }
 
-    public float getMark() { return average_mark; }
+    public Double getMark() { return average_mark; }
 }
