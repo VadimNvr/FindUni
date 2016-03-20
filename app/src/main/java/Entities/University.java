@@ -9,14 +9,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import Services.ImageService;
 
 /**
  * Created by yudzh_000 on 17.03.2016.
  */
-public class University implements Serializable, Entity {
+public class University implements Entity {
     int id;
 
     String name;
@@ -73,7 +72,6 @@ public class University implements Serializable, Entity {
     }
 
 
-
     public int getId() {
         return id;
     }
@@ -109,6 +107,7 @@ public class University implements Serializable, Entity {
 
     /**
      * Load obj from Local BD if there is no obj with this name put it in BD
+     *
      * @param name Name of Universoty
      * @return The obj from BD
      */
@@ -122,7 +121,7 @@ public class University implements Serializable, Entity {
      * Load Specialities from BD if it is no loaded before.
      */
     public void loadSpecialities() {
-        if(!loadSpecialities) {
+        if (!loadSpecialities) {
 
         }
     }
@@ -146,6 +145,14 @@ public class University implements Serializable, Entity {
 
     public int getLoaded() {
         return loaded;
+    }
+
+    public String getViewableMeanPrice() {
+        if (this.meanPrice == 0.0) {
+            return "-";
+        } else {
+            return Double.toString(this.meanPrice);
+        }
     }
 
     public static University initFromCursor(Cursor cursor, Town town) {
@@ -176,12 +183,12 @@ public class University implements Serializable, Entity {
         university.imagePath = ImageService.saveToFileFromUrl(activity.getApplicationContext(), json.getString("image_url"));
         double meanPoints, meanPrice;
 
-        if(json.isNull("mean_point")) {
+        if (json.isNull("mean_point")) {
             meanPoints = 0;
         } else {
             meanPoints = json.getDouble("mean_point");
         }
-        if(json.isNull("mean_price")) {
+        if (json.isNull("mean_price")) {
             meanPrice = 0;
         } else {
             meanPrice = json.getDouble("mean_price");
@@ -193,5 +200,13 @@ public class University implements Serializable, Entity {
         university.town = town;
         university.liked = 0;
         return university;
+    }
+
+    public String getViewableMark() {
+        if (this.meanPoints == 0.0) {
+            return "-";
+        } else {
+            return Double.toString(this.meanPoints);
+        }
     }
 }

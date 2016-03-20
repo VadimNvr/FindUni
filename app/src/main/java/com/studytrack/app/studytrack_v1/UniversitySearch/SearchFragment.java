@@ -13,14 +13,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.rey.material.widget.ProgressView;
 import com.studytrack.app.studytrack_v1.Fab;
 import com.studytrack.app.studytrack_v1.R;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.FilterFragment;
-import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniversityFragment;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
 import com.studytrack.app.studytrack_v1.myFragment;
@@ -108,9 +106,10 @@ public class SearchFragment extends myFragment {
     }
 
     private class FragmentLoader extends AsyncTask<Void, Void, Void> {
-        private ArrayList<RecyclerItem> listItems = new ArrayList<>();
+        private ArrayList<University> listItems = new ArrayList<>();
         private boolean loadFavorite;
         GetUniversitiesRequest request;
+
         public FragmentLoader(boolean loadFavorite) {
             this.loadFavorite = loadFavorite;
         }
@@ -131,22 +130,20 @@ public class SearchFragment extends myFragment {
             List<Region> regions = null;
             try {
                 regions = regionsRequest.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+
             GetTownsRequest townsRequest = new GetTownsRequest(activity, regions.get(0));
             townsRequest.execute();
             List<Town> towns = null;
             try {
                 towns = townsRequest.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
-            this.request = new GetUniversitiesRequest(activity, towns.get(0),0,10);
+
+            this.request = new GetUniversitiesRequest(activity, towns.get(0),0,5);
             this.request.execute();
         }
 
@@ -160,16 +157,8 @@ public class SearchFragment extends myFragment {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            for (University university: universities) {
-                listItems.add(new RecyclerItem(
-                        university.getLogoPath(),
-                        university.getName(),
-                        university.getTown().getName(),
-                        university.getMeanPrice(),
-                        university.getMeanPoints()
-                ));
-            }
-             return null;
+            listItems.addAll(universities);
+            return null;
         }
 
 
@@ -184,10 +173,10 @@ public class SearchFragment extends myFragment {
                 public void onClick(View view) {
                     cur_frag = new UniversityFragment();
 
-                    UniData data = new UniData();
-                    data.setName(((TextView) view.findViewById(R.id.name)).getText().toString());
+                    int itemPosition = university_recycler.getChildAdapterPosition(view);
+                    University university = listItems.get(itemPosition - 1);
 
-                    putData(cur_frag, data);
+                    putData(cur_frag, university);
                     activity.getSupportFragmentManager()
                             .beginTransaction()
                             //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
@@ -274,7 +263,7 @@ public class SearchFragment extends myFragment {
             progress = (ProgressView) activity.findViewById(R.id.progress);
         }
 
-        private void putData(myFragment frag, UniData data) {
+        private void putData(myFragment frag, University data) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", data);
             frag.setArguments(bundle);

@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-
-public class Town implements Serializable,Entity {
+public class Town implements Entity {
     String name;
     int count;
     int id;
