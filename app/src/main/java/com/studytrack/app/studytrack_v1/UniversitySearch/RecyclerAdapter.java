@@ -3,7 +3,6 @@ package com.studytrack.app.studytrack_v1.UniversitySearch;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import com.studytrack.app.studytrack_v1.R;
 import java.io.File;
 import java.util.List;
 
+import Entities.University;
+
 /**
  * Created by vadim on 18.01.16.
  */
@@ -21,11 +22,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     Context context;
     private static final int TYPE_HEADER = 2;
     private static final int TYPE_ITEM = 1;
-    private List<RecyclerItem> universities;
+    private List<University> universities;
     private View.OnClickListener item_listener;
 
-    public RecyclerAdapter(Activity _activity, List<RecyclerItem> _universities, View.OnClickListener ocl) {
-        universities = _universities;
+    public RecyclerAdapter(Activity _activity, List<University> universities, View.OnClickListener ocl) {
+        this.universities = universities;
         context = _activity;
         item_listener = ocl;
     }
@@ -47,14 +48,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int pos) {
         if (!isPositionHeader(pos)) {
-            RecyclerItem uni = universities.get(pos-1);
+            University uni = universities.get(pos-1);
             RecyclerItemViewHolder holder = (RecyclerItemViewHolder) viewHolder;
             holder.name.setText(uni.getName());
-            holder.location.setText(uni.getLocation());
+            holder.location.setText(uni.getTown().getName());
             holder.average_mark.setText(uni.getViewableMark());
-            File image = new File(uni.getIconId());
-            Log.i("PathEx",uni.getIconId());
-            Log.i("Ex", Boolean.toString(image.exists()));
+            File image = new File(uni.getLogoPath());
             // TODO: 15.03.2016 переделать на норм лого если нет лого
             if(image.exists()) {
                 Picasso.with(context).load(image).resize(300, 300).into(holder.logo);
@@ -62,7 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else {
                 Picasso.with(context).load(R.drawable.mgimo_logo).resize(300, 300).into(holder.logo);
             }
-            holder.cost.setText(uni.getViewableCost());
+            holder.cost.setText(uni.getViewableMeanPrice());
         }
     }
 

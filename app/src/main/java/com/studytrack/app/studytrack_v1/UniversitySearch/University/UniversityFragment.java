@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.studytrack.app.studytrack_v1.R;
-import com.studytrack.app.studytrack_v1.StudyTrackApplication;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
 import com.studytrack.app.studytrack_v1.Utils.JSONloader;
 import com.studytrack.app.studytrack_v1.myFragment;
@@ -29,6 +27,7 @@ import com.studytrack.app.studytrack_v1.myFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import Entities.University;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -59,7 +58,8 @@ public class UniversityFragment extends myFragment
     protected RecyclerView recycler;
     protected View progress;
 
-    private UniData uniData;
+    University university;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +79,7 @@ public class UniversityFragment extends myFragment
     }
 
     private void loadData() {
-        uniData = (UniData) getArguments().getSerializable("data");
+        university = (University) getArguments().getSerializable("data");
     }
 
     private void initActivity() {
@@ -109,8 +109,8 @@ public class UniversityFragment extends myFragment
     }
 
     private void initTitle() {
-        mMainTitle.setText(uniData.getName());
-        mTitle.setText(uniData.getName());
+        mMainTitle.setText(university.getName());
+        mTitle.setText(university.getName());
 
         mMainTitle.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -194,6 +194,7 @@ public class UniversityFragment extends myFragment
 
         @Override
         protected Void doInBackground(Void... params) {
+/*
 
             long rowId = uniData.getName().hashCode();
             Log.d("Test", Long.toString(rowId));
@@ -217,6 +218,7 @@ public class UniversityFragment extends myFragment
                 // TODO: 16.03.2016 rewrite
                 readInfo(uniData, db, rowId);
             }
+*/
 
             return null;
         }
@@ -225,11 +227,10 @@ public class UniversityFragment extends myFragment
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            Picasso.with(activity).load(R.drawable.university_header).into(mHeader);
-            Picasso.with(activity).load(R.drawable.msu_logo).into(mLogo);
-
             recycler.setLayoutManager(new LinearLayoutManager(activity));
-            recycler.setAdapter(new RecyclerAdapter(uniData));
+            recycler.setAdapter(new RecyclerAdapter(university));
+            Picasso.with(activity).load(university.getImagePath()).resize(300,300).into(mHeader);
+            Picasso.with(activity).load(university.getLogoPath()).into(mLogo);
 
             hideProgress();
         }
@@ -259,7 +260,7 @@ public class UniversityFragment extends myFragment
         private void readInfo(UniData data, SQLiteDatabase db, long Id) {
             // TODO: 16.03.2016 УБРАТЬ НАХУЙ ОТ СЮДА
             Cursor cursor = db.query("university",
-                    new String[] {"id", "isloaded", "isfavourite", "address", "phone", "site"},
+                    new String[] {"id", "is_loaded", "is_favourite", "address", "phone", "site"},
                     "id = " + Long.toString(Id),
                     null, null, null, null);
 

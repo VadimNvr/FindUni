@@ -1,17 +1,20 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch.University;
 
-import com.studytrack.app.studytrack_v1.UniversitySearch.University.RecyclerHolder.ContactViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+
+import com.studytrack.app.studytrack_v1.UniversitySearch.University.RecyclerHolder.ContactViewHolder;
+
+import Entities.University;
 
 
 /**
  * Created by vadim on 29.01.16.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    UniData data;
+    University data;
 
-    RecyclerAdapter(UniData _data) { data = _data; }
+    RecyclerAdapter(University data) { this.data = data; }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int page) {
@@ -25,7 +28,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
 
             case RecyclerHolder.SCORES:
-                ((RecyclerHolder.ScoresViewHolder) viewHolder).setValues(77.9f, 160000.0f);
+                ((RecyclerHolder.ScoresViewHolder) viewHolder).setValues((float)data.getMeanPoints()
+                        ,(float) data.getMeanPrice());
                 ((RecyclerHolder.ScoresViewHolder) viewHolder).animate();
                 break;
 
