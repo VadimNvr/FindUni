@@ -27,6 +27,8 @@ import com.studytrack.app.studytrack_v1.myFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+
 import Entities.University;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -229,8 +231,8 @@ public class UniversityFragment extends myFragment
 
             recycler.setLayoutManager(new LinearLayoutManager(activity));
             recycler.setAdapter(new RecyclerAdapter(university));
-            Picasso.with(activity).load(university.getImagePath()).resize(300,300).into(mHeader);
-            Picasso.with(activity).load(university.getLogoPath()).into(mLogo);
+            Picasso.with(activity).load(new File(university.getImagePath())).resize(300, 300).into(mHeader);
+            Picasso.with(activity).load(new File(university.getLogoPath())).fit().into(mLogo);
 
             hideProgress();
         }
