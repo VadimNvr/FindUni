@@ -1,7 +1,6 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch.University;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -259,25 +258,6 @@ public class UniversityFragment extends myFragment
             }
         }
 
-        private void readInfo(UniData data, SQLiteDatabase db, long Id) {
-            // TODO: 16.03.2016 УБРАТЬ НАХУЙ ОТ СЮДА
-            Cursor cursor = db.query("university",
-                    new String[] {"id", "is_loaded", "is_favourite", "address", "phone", "site"},
-                    "id = " + Long.toString(Id),
-                    null, null, null, null);
-
-            cursor.moveToFirst();
-
-            int siteIdx  = cursor.getColumnIndex("site");
-            int phoneIdx = cursor.getColumnIndex("phone");
-            int adrIdx   = cursor.getColumnIndex("address");
-
-            data.setPhone(parsePhone(cursor.getString(phoneIdx)));
-            data.setAddress(cursor.getString(adrIdx));
-            data.setSite(cursor.getString(siteIdx));
-
-            cursor.close();
-        }
 
         private void initProgress() {
             progress = fragment.findViewById(R.id.progress);

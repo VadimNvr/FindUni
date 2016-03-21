@@ -1,14 +1,11 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch;
 
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.studytrack.app.studytrack_v1.R;
-import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniData;
-
 /**
  * Created by vadim on 18.01.16.
  */

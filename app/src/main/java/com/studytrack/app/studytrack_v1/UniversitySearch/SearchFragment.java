@@ -143,7 +143,7 @@ public class SearchFragment extends myFragment {
                 e.printStackTrace();
             }
 
-            this.request = new GetUniversitiesRequest(activity, towns.get(0),0,5);
+            this.request = new GetUniversitiesRequest(activity, towns.get(0),0, 10);
             this.request.execute();
         }
 

@@ -32,7 +32,7 @@ public class GetUniversitiesRequest extends Request<University>{
         if( town.getCount() - offset - count > 0) {
             result.addAll(this.localDb.loadUniversities(town, count, offset));
             if(result.isEmpty() || result.size() < count) {
-                List<University> extra = this.db.loadUniversities(town, count, offset, activity);
+                List<University> extra = this.db.loadUniversities(town, count - result.size(), offset + result.size(), activity);
                 saveToLocal(extra);
                 result.addAll(extra);
             }
