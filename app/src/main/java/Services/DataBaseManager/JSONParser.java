@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class JSONParser {
     public static Object readJsonFromUrl(String url, Map<String, String> parameters) throws IOException, JSONException {
         url += "?";
         for ( Map.Entry<String, String> entry: parameters.entrySet()) {
-           url += entry.getKey()+"=" +entry.getValue().replaceAll(" ", "%20") +"&";
+           url += entry.getKey()+"=" + URLEncoder.encode(entry.getValue(), "UTF-8") +"&";
         }
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

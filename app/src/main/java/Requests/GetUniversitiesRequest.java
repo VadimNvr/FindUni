@@ -1,7 +1,6 @@
 package Requests;
 
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class GetUniversitiesRequest extends Request<University>{
         if( town.getCount() - offset - count > 0) {
             result.addAll(this.localDb.loadUniversities(town, count, offset));
             if(result.isEmpty() || result.size() < count) {
-                List<University> extra = this.db.loadUniversities(town, count, offset, activity);
+                List<University> extra = this.db.loadUniversities(town, count - result.size(), offset + result.size(), activity);
                 saveToLocal(extra);
                 result.addAll(extra);
             }
@@ -40,9 +39,4 @@ public class GetUniversitiesRequest extends Request<University>{
         return result;
     }
 
-    @Override
-    protected void onPostExecute(List<University> universities) {
-        super.onPostExecute(universities);
-        Log.i("Finished", "finished");
-    }
 }

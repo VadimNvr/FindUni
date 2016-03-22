@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +51,12 @@ public class SearchFragment extends myFragment {
     protected View[] sheetItems;
 
     protected RecyclerView university_recycler;
+    private int visibleThreshold = 1;
+    private int lastVisibleItem, totalItemCount;
+    private boolean loading;
+
+    int curCount = 5;
+    int curOffset = 0;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,19 +71,136 @@ public class SearchFragment extends myFragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new FragmentLoader(true).execute();
+        initActivity();
+        initProgress();
+        initToolbar();
+        initSheetFab();
+        initRecycler();
+        initProgress();
+        new LoadDataTask(true, getTown(), 5, 0).execute();
+        int i = 5;
     }
+
+    private void initActivity() {
+        activity = (AppCompatActivity) getActivity();
+    }
+
+    private void initToolbar() {
+        toolbar = (Toolbar) activity.findViewById(R.id.main_toolbar);
+        actionbar = activity.getSupportActionBar();
+
+        actionbar.setTitle("Университеты");
+
+        toolbar.setNavigationIcon(R.drawable.menu);
+        toolbar.setTranslationY(0);
+        Animator.animAlpha(toolbar, 150, View.VISIBLE);
+
+        //Animator.animY(toolbar, 150, 0, 0 - (int) toolbar.getTranslationY(), true);
+    }
+
+    private void initSheetFab() {
+        View sheetView = fragment.findViewById(R.id.fab_sheet);
+        View overlay = fragment.findViewById(R.id.overlay);
+        int сolor = getResources().getColor(R.color.backgroundColorPrimary);
+
+        fab = (Fab) fragment.findViewById(R.id.fab);
+        materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay, сolor, сolor);
+
+        sheetItems = new View[2];
+        sheetItems[0] = fragment.findViewById(R.id.fab_sheet_item_filter);
+        sheetItems[1] = fragment.findViewById(R.id.fab_sheet_item_sort);
+
+        sheetItems[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialSheetFab.hideSheet();
+                cur_frag = new FilterFragment();
+                getFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.main_fragment, cur_frag)
+                        .commit();
+            }
+        });
+    }
+
+    private void initRecycler() {
+        university_recycler = (RecyclerView) fragment.findViewById(R.id.university_list);
+        university_recycler.setLayoutManager(new LinearLayoutManager(activity));
+
+        university_recycler.addOnScrollListener(new HidingScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                toolbar.setTranslationY(Math.min(
+                        0.0f,
+                        Math.max(toolbar.getTranslationY() - dy, -3 * getResources().getDimensionPixelSize(R.dimen.toolbar_height))
+                ));
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) university_recycler.getLayoutManager();
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                linearLayoutManager.findFirstVisibleItemPosition();
+                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    // End has been reached
+                    // Do something
+
+                    Log.i("TAG", "tag");
+                    loading = true;
+                    loadMoreData();
+                }
+            }
+
+            @Override
+            public void onHide() {
+                fab.hide_down();
+            }
+
+            @Override
+            public void onShow() {
+                fab.show_up();
+            }
+        });
+    }
+
+    private void loadMoreData() {
+        Town town = getTown();
+        new LoadDataTask(true, town, curCount, curOffset).execute();
+    }
+
+    private void initProgress() {
+        progress = (ProgressView) activity.findViewById(R.id.progress);
+    }
+
+    // TODO: 22.03.2016 remove
+    private Town getTown() {
+        GetRegionsRequest regionsRequest = new GetRegionsRequest(activity);
+        regionsRequest.execute();
+        List<Region> regions = null;
+        try {
+            regions = regionsRequest.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        GetTownsRequest townsRequest = new GetTownsRequest(activity, regions.get(0));
+        townsRequest.execute();
+        List<Town> towns = null;
+        try {
+            towns = townsRequest.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return towns.get(0);
+    }
+
 
     @Override
     public boolean onBackPressed() {
         if ((cur_frag != null) && cur_frag.isAdded() && cur_frag.onBackPressed()) {
             return true;
-        }
-        else if (materialSheetFab.isSheetVisible()) {
+        } else if (materialSheetFab.isSheetVisible()) {
             materialSheetFab.hideSheet();
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
     @Override
@@ -105,45 +229,27 @@ public class SearchFragment extends myFragment {
         return false;
     }
 
-    private class FragmentLoader extends AsyncTask<Void, Void, Void> {
-        private ArrayList<University> listItems = new ArrayList<>();
-        private boolean loadFavorite;
+    private class LoadDataTask extends AsyncTask<Void, Void, Void> {
+
+        ArrayList<University> listItems = new ArrayList<>();
+        boolean loadFavorite;
+        Town town;
+        int count;
+        int offset;
         GetUniversitiesRequest request;
 
-        public FragmentLoader(boolean loadFavorite) {
+        public LoadDataTask(boolean loadFavorite, Town town, int count, int offset) {
             this.loadFavorite = loadFavorite;
+            this.town = town;
+            this.count = count;
+            this.offset = offset;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            initActivity();
-            initProgress();
             progress.start();
-            initToolbar();
-            initSheetFab();
-            initRecycler();
-            initProgress();
-
-            GetRegionsRequest regionsRequest = new GetRegionsRequest(activity);
-            regionsRequest.execute();
-            List<Region> regions = null;
-            try {
-                regions = regionsRequest.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            GetTownsRequest townsRequest = new GetTownsRequest(activity, regions.get(0));
-            townsRequest.execute();
-            List<Town> towns = null;
-            try {
-                towns = townsRequest.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            this.request = new GetUniversitiesRequest(activity, towns.get(0),0,5);
+            this.request = new GetUniversitiesRequest(activity, town, offset, count);
             this.request.execute();
         }
 
@@ -152,115 +258,57 @@ public class SearchFragment extends myFragment {
             List<University> universities = null;
             try {
                 universities = this.request.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             listItems.addAll(universities);
+            publishProgress();
             return null;
         }
 
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            progress.stop();
+
+            if (university_recycler.getAdapter() == null) {
+                View.OnClickListener ocl = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cur_frag = new UniversityFragment();
+
+                        int itemPosition = university_recycler.getChildAdapterPosition(view);
+                        University university = listItems.get(itemPosition - 1);
+
+                        putData(cur_frag, university);
+                        activity.getSupportFragmentManager()
+                                .beginTransaction()
+                                        //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                                .addToBackStack(null)
+                                .replace(R.id.main_fragment, cur_frag)
+                                .commit();
+                    }
+                };
+                RecyclerAdapter recyclerAdapter = new RecyclerAdapter(activity, listItems, ocl);
+                university_recycler.setAdapter(recyclerAdapter);
+            } else {
+                ((RecyclerAdapter) university_recycler.getAdapter()).addItems(listItems);
+            }
+            GetUniversitiesRequest request = new GetUniversitiesRequest(activity, town, curOffset +
+                    listItems.size(), curCount);
+            request.execute();
+
+        }
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
             progress.stop();
+            curOffset += count;
+            SearchFragment.this.loading = false;
 
-            View.OnClickListener ocl = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    cur_frag = new UniversityFragment();
-
-                    int itemPosition = university_recycler.getChildAdapterPosition(view);
-                    University university = listItems.get(itemPosition - 1);
-
-                    putData(cur_frag, university);
-                    activity.getSupportFragmentManager()
-                            .beginTransaction()
-                            //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                            .addToBackStack(null)
-                            .replace(R.id.main_fragment, cur_frag)
-                            .commit();
-                }
-            };
-
-            RecyclerAdapter recyclerAdapter = new RecyclerAdapter(activity, listItems, ocl);
-            university_recycler.setAdapter(recyclerAdapter);
-        }
-
-        //Initialising methods
-        private void initActivity() {
-            activity = (AppCompatActivity) getActivity();
-        }
-
-        private void initToolbar() {
-            toolbar   = (Toolbar) activity.findViewById(R.id.main_toolbar);
-            actionbar = activity.getSupportActionBar();
-
-            actionbar.setTitle("Университеты");
-
-            toolbar.setNavigationIcon(R.drawable.menu);
-            toolbar.setTranslationY(0);
-            Animator.animAlpha(toolbar, 150, View.VISIBLE);
-
-            //Animator.animY(toolbar, 150, 0, 0 - (int) toolbar.getTranslationY(), true);
-        }
-
-        private void initSheetFab() {
-            View sheetView = fragment.findViewById(R.id.fab_sheet);
-            View overlay   = fragment.findViewById(R.id.overlay);
-            int сolor = getResources().getColor(R.color.backgroundColorPrimary);
-
-            fab = (Fab) fragment.findViewById(R.id.fab);
-            materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay, сolor, сolor);
-
-            sheetItems = new View[2];
-            sheetItems[0] = fragment.findViewById(R.id.fab_sheet_item_filter);
-            sheetItems[1] = fragment.findViewById(R.id.fab_sheet_item_sort);
-
-            sheetItems[0].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    materialSheetFab.hideSheet();
-                    cur_frag = new FilterFragment();
-                    getFragmentManager().beginTransaction()
-                            .addToBackStack(null)
-                            .replace(R.id.main_fragment, cur_frag)
-                            .commit();
-                }
-            });
-        }
-
-        private void initRecycler() {
-            university_recycler = (RecyclerView) fragment.findViewById(R.id.university_list);
-            university_recycler.setLayoutManager(new LinearLayoutManager(activity));
-
-            university_recycler.setOnScrollListener(new HidingScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    toolbar.setTranslationY(Math.min(
-                            0.0f,
-                            Math.max(toolbar.getTranslationY() - dy, -3 * getResources().getDimensionPixelSize(R.dimen.toolbar_height))
-                    ));
-                }
-
-                @Override
-                public void onHide() {
-                    fab.hide_down();
-                }
-
-                @Override
-                public void onShow() {
-                    fab.show_up();
-                }
-            });
-        }
-
-        private void initProgress() {
-            progress = (ProgressView) activity.findViewById(R.id.progress);
         }
 
         private void putData(myFragment frag, University data) {
@@ -270,3 +318,5 @@ public class SearchFragment extends myFragment {
         }
     }
 }
+
+

@@ -3,7 +3,6 @@ package Services.LocalDataBaseManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.studytrack.app.studytrack_v1.StudyTrackApplication;
 
@@ -28,14 +27,6 @@ public class LocalDataBaseDriver {
 
     public List<University> loadUniversities(Town town, int count, int offset) {
         ArrayList<University> universities = new ArrayList<>();
-        Cursor cur = db.rawQuery("Select * from University",null);
-        while (cur.moveToNext()) {
-            String data = "";
-            for (int i = 0; i < cur.getColumnCount(); i++) {
-                data+=cur.getString(i) +"\t";
-            }
-            Log.d("fail", data);
-        }
 
         Cursor cursor = db.rawQuery("Select * from University Where town_id = ? LIMIT ? OFFSET ?",
                 new String[]{Integer.toString(town.getId()),Integer.toString(count),
@@ -64,20 +55,11 @@ public class LocalDataBaseDriver {
         while (cursor.moveToNext()) {
             specialities.add(Speciality.initFromCursor(cursor));
         }
-        //// TODO: 17.03.2016  discuss about add to obj university
         return specialities;
     }
 
     public List<Town> loadTowns(Region region) {
         ArrayList<Town> towns = new ArrayList<>();
-        Cursor cursor1 = db.rawQuery("Select * from Town ",null);
-        while (cursor1.moveToNext()) {
-            String data = "";
-            for (int i = 0; i < cursor1.getColumnCount(); i++) {
-                data+=cursor1.getString(i) +"\t";
-            }
-            Log.d("fail", data);
-        }
         Cursor cursor = db.rawQuery("Select * from Town Where region_id = ?", new String[]{Integer.toString(region.getId())});
         while (cursor.moveToNext()) {
             towns.add(Town.initFromCursor(cursor, region));

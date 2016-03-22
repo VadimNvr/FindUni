@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,7 +47,7 @@ public class ImageService {
 
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+            bm.compress(Bitmap.CompressFormat.JPEG, 50, outstream);
             byte[] byteArray = outstream.toByteArray();
 
             fos.write(byteArray);
@@ -56,7 +57,7 @@ public class ImageService {
         }
 
         File file = new File(context.getFilesDir().getAbsolutePath(), "/" + subPath);
-
+        Log.i("TAG", context.getFilesDir().getAbsolutePath());
         return resultPath;
     }
 

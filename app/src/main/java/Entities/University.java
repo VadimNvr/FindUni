@@ -193,7 +193,7 @@ public class University implements Entity {
         } else {
             meanPrice = json.getDouble("mean_price");
         }
-        university.meanPoints = meanPoints;
+        university.meanPoints = (int)(meanPoints / 3);
         university.meanPrice = meanPrice;
         university.site = json.getString("site_url");
         university.phone = json.getString("telephone");
