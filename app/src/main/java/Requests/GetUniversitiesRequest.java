@@ -1,7 +1,6 @@
 package Requests;
 
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +39,4 @@ public class GetUniversitiesRequest extends Request<University>{
         return result;
     }
 
-    @Override
-    protected void onPostExecute(List<University> universities) {
-        super.onPostExecute(universities);
-        Log.i("Finished", "finished");
-    }
 }

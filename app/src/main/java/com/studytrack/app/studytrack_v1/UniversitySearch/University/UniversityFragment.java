@@ -1,7 +1,5 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch.University;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -20,11 +18,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.studytrack.app.studytrack_v1.R;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
-import com.studytrack.app.studytrack_v1.Utils.JSONloader;
 import com.studytrack.app.studytrack_v1.myFragment;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
 
@@ -195,31 +189,6 @@ public class UniversityFragment extends myFragment
 
         @Override
         protected Void doInBackground(Void... params) {
-/*
-
-            long rowId = uniData.getName().hashCode();
-            Log.d("Test", Long.toString(rowId));
-
-            SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
-            Cursor cursor = db.rawQuery("Select * from university where university.name = " + "'" + uniData.getName() + "';", null);
-            
-            if(cursor.moveToFirst()) {
-                for (int i = 0; i <cursor.getColumnCount(); i++) {
-                    Log.i("db", cursor.getColumnName(i) + cursor.getString(i));
-                }
-
-            }
-            if (cursor.moveToFirst()) {
-//                int isloaded = cursor.getInt(cursor.getColumnIndex("isloaded"));
-//                cursor.close();
-//
-//                if (isloaded == 0) {
-//                    updateInfo(rowId, db);
-//                }
-                // TODO: 16.03.2016 rewrite
-                readInfo(uniData, db, rowId);
-            }
-*/
 
             return null;
         }
@@ -230,34 +199,11 @@ public class UniversityFragment extends myFragment
 
             recycler.setLayoutManager(new LinearLayoutManager(activity));
             recycler.setAdapter(new RecyclerAdapter(university));
-            Picasso.with(activity).load(new File(university.getImagePath())).resize(300, 300).into(mHeader);
-            Picasso.with(activity).load(new File(university.getLogoPath())).fit().into(mLogo);
+            Picasso.with(activity).load(new File(university.getImagePath())).into(mHeader);
+            Picasso.with(activity).load(new File(university.getLogoPath())).into(mLogo);
 
             hideProgress();
         }
-
-        private void updateInfo(long Id, SQLiteDatabase db) {
-            try {
-                JSONloader loader = new JSONloader();
-                JSONArray ar = loader.fromHTTP("http://finduniv.appspot.com/getUniversities", "count=20");
-
-                for (int univ_id = 0; univ_id < ar.length(); ++univ_id) {
-                    JSONObject univ = ar.getJSONObject(univ_id);
-                    if (univ.getString("name").hashCode() == Id) {
-                        ContentValues newValues = new ContentValues();
-                        newValues.put("isloaded", 1);
-                        newValues.put("site", univ.getString("site_url"));
-                        newValues.put("phone", univ.getString("telephone"));
-                        newValues.put("address", univ.getString("address"));
-
-                        db.update("university_table", newValues, "id = " + Long.toString(Id), null);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
 
         private void initProgress() {
             progress = fragment.findViewById(R.id.progress);

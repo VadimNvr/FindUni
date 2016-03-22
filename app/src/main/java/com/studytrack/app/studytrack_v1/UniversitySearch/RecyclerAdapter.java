@@ -48,7 +48,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int pos) {
         if (!isPositionHeader(pos)) {
-            University uni = universities.get(pos-1);
+            University uni = universities.get(pos - 1);
             RecyclerItemViewHolder holder = (RecyclerItemViewHolder) viewHolder;
             holder.name.setText(uni.getName());
             holder.location.setText(uni.getTown().getName());
@@ -56,7 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             File image = new File(uni.getLogoPath());
             // TODO: 15.03.2016 переделать на норм лого если нет лого
             if(image.exists()) {
-                Picasso.with(context).load(image).resize(300, 300).into(holder.logo);
+                Picasso.with(context).load(image).resize(500, 500).into(holder.logo);
             }
             else {
                 Picasso.with(context).load(R.drawable.mgimo_logo).resize(300, 300).into(holder.logo);
@@ -78,6 +78,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return TYPE_ITEM;
     }
 
+    public void addItems(List<University> universities) {
+        this.universities.addAll(universities);
+        notifyDataSetChanged();
+    }
     private boolean isPositionHeader(int position) {
         return position == 0;
     }
