@@ -77,8 +77,9 @@ public class SearchFragment extends myFragment {
         initSheetFab();
         initRecycler();
         initProgress();
+        loading = false;
+        curOffset = 0; // TODO: 23.03.2016 Write it normal 
         new LoadDataTask(true, getTown(), 5, 0).execute();
-        int i = 5;
     }
 
     private void initActivity() {
@@ -163,6 +164,9 @@ public class SearchFragment extends myFragment {
 
     private void loadMoreData() {
         Town town = getTown();
+        if(town.getCount() - curOffset < 0) {
+            return;
+        }
         new LoadDataTask(true, town, curCount, curOffset).execute();
     }
 
