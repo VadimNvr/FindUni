@@ -51,11 +51,11 @@ public class SearchFragment extends myFragment {
     protected View[] sheetItems;
 
     protected RecyclerView university_recycler;
-    private int visibleThreshold = 1;
+    private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
 
-    int curCount = 5;
+    int curCount = 10;
     int curOffset = 0;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -237,6 +237,7 @@ public class SearchFragment extends myFragment {
         int count;
         int offset;
         GetUniversitiesRequest request;
+        RecyclerAdapter recyclerAdapter;
 
         public LoadDataTask(boolean loadFavorite, Town town, int count, int offset) {
             this.loadFavorite = loadFavorite;
@@ -251,6 +252,7 @@ public class SearchFragment extends myFragment {
             progress.start();
             this.request = new GetUniversitiesRequest(activity, town, offset, count);
             this.request.execute();
+            recyclerAdapter = (RecyclerAdapter) university_recycler.getAdapter();
         }
 
         @Override
@@ -262,15 +264,17 @@ public class SearchFragment extends myFragment {
                 e.printStackTrace();
             }
             listItems.addAll(universities);
-            publishProgress();
+
+            if (recyclerAdapter != null) {
+                recyclerAdapter.addItems(universities);
+            }
+
             return null;
         }
 
-
         @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-            progress.stop();
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
 
             if (university_recycler.getAdapter() == null) {
                 View.OnClickListener ocl = new View.OnClickListener() {
@@ -290,25 +294,17 @@ public class SearchFragment extends myFragment {
                                 .commit();
                     }
                 };
-                RecyclerAdapter recyclerAdapter = new RecyclerAdapter(activity, listItems, ocl);
+
+                recyclerAdapter = new RecyclerAdapter(activity, listItems, ocl);
                 university_recycler.setAdapter(recyclerAdapter);
-            } else {
-                ((RecyclerAdapter) university_recycler.getAdapter()).addItems(listItems);
             }
-            GetUniversitiesRequest request = new GetUniversitiesRequest(activity, town, curOffset +
-                    listItems.size(), curCount);
-            request.execute();
-
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+            else {
+                recyclerAdapter.notifyDataSetChanged();
+            }
 
             progress.stop();
             curOffset += count;
             SearchFragment.this.loading = false;
-
         }
 
         private void putData(myFragment frag, University data) {

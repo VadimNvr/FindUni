@@ -56,10 +56,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             File image = new File(uni.getLogoPath());
             // TODO: 15.03.2016 переделать на норм лого если нет лого
             if(image.exists()) {
-                Picasso.with(context).load(image).resize(500, 500).into(holder.logo);
+                Picasso.with(context).load(image).resize(150, 150).into(holder.logo);
             }
             else {
-                Picasso.with(context).load(R.drawable.mgimo_logo).resize(300, 300).into(holder.logo);
+                Picasso.with(context).load(R.drawable.mgimo_logo).resize(150, 150).into(holder.logo);
             }
             holder.cost.setText(uni.getViewableMeanPrice());
         }
@@ -79,8 +79,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void addItems(List<University> universities) {
+        int start = this.universities.size();
+        int count = universities.size();
+
         this.universities.addAll(universities);
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
+        //notifyItemRangeInserted(start, count);
     }
     private boolean isPositionHeader(int position) {
         return position == 0;
