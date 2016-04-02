@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by yudzh_000 on 01.04.2016.
  */
-public class SpecialityFilterComponent extends FilterComponent {
+class SpecialityFilterComponent extends FilterComponent {
 
     public SpecialityFilterComponent(List<String> params) {
         super(params);

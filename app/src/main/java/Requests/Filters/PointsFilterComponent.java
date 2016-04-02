@@ -2,7 +2,7 @@ package Requests.Filters;
 
 import java.util.List;
 
-public class PointsFilterComponent extends FilterComponent {
+class PointsFilterComponent extends FilterComponent {
 
     public PointsFilterComponent(List<Integer> params) {
         super(params);

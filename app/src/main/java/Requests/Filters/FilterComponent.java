@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by yudzh_000 on 30.03.2016.
  */
-public abstract class FilterComponent {
+abstract class FilterComponent {
     List<?> params = new ArrayList<>();
     protected StringBuilder SQLBuilder = new StringBuilder();
     protected StringBuilder RequestBuilder = new StringBuilder();
