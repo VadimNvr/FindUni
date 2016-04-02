@@ -9,4 +9,7 @@ import java.io.Serializable;
  */
 public interface Entity extends Serializable {
     void put(SQLiteDatabase db);
+
+    String getName();
+
 }

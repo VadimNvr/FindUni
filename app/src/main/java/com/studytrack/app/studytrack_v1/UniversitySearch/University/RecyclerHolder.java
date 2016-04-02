@@ -62,6 +62,7 @@ public class RecyclerHolder {
             super(itemView);
 
             web = (TextView) itemView.findViewById(R.id.web_button);
+
             map = (TextView) itemView.findViewById(R.id.map_button);
             favourites = (TextView) itemView.findViewById(R.id.favourites_button);
         }

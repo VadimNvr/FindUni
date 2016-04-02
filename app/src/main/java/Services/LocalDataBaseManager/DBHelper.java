@@ -48,7 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE Speciality (" +
                         "id integer PRIMARY KEY AUTOINCREMENT," +
                         "university_id integer," +
-                        "type_id text," +
+                        "type_id integer," +
                         "price integer," +
                         "points integer," +
                         "subjects integer," +

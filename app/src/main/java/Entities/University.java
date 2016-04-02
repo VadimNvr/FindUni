@@ -1,5 +1,6 @@
 package Entities;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,6 +30,8 @@ public class University implements Entity {
     String logoPath;
     String imagePath;
     int loaded;
+
+    Activity activity;
 
     private boolean loadSpecialities = false;
 
@@ -84,6 +87,17 @@ public class University implements Entity {
         if (cursor.moveToFirst()) {
             this.id = cursor.getInt(0);
         } else {
+            try {
+                this.logoPath = ImageService.saveToFileFromUrl(activity.getApplicationContext(), this.logoPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                this.imagePath = ImageService.saveToFileFromUrl(activity.getApplicationContext(), this.imagePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             ContentValues values = new ContentValues();
             values.put("name", name);
             values.put("address", address);
@@ -135,6 +149,10 @@ public class University implements Entity {
         return liked;
     }
 
+    public void inverseLiked() {
+        liked = ++liked % 2;
+        // TODO: 24.03.2016 save to DB
+    }
     public String getLogoPath() {
         return logoPath;
     }
@@ -154,6 +172,13 @@ public class University implements Entity {
             return Double.toString(this.meanPrice);
         }
     }
+
+    public static University getByID(SQLiteDatabase db, int id) {
+        Cursor cursor = db.rawQuery("Select * from University Where id = ?", new String[]{Integer.toString(id)});
+        cursor.moveToNext();
+        return University.initFromCursor(cursor, Town.getByID(db,id));
+    }
+
 
     public static University initFromCursor(Cursor cursor, Town town) {
         University university = new University();
@@ -175,12 +200,15 @@ public class University implements Entity {
 
     public static University initFromJSON(JSONObject json, Town town, AppCompatActivity activity) throws JSONException, IOException {
         University university = new University();
+        university.activity = activity;
         university.town = town;
         university.name = json.getString("name");
         university.address = json.getString("address");
-        university.logoPath = ImageService.saveToFileFromUrl(activity.getApplicationContext(),
-                json.getString("logo_url"));
-        university.imagePath = ImageService.saveToFileFromUrl(activity.getApplicationContext(), json.getString("image_url"));
+//        university.logoPath = ImageService.saveToFileFromUrl(activity.getApplicationContext(),
+//                json.getString("logo_url"));
+//        university.imagePath = ImageService.saveToFileFromUrl(activity.getApplicationContext(), json.getString("image_url"));
+        university.logoPath = json.getString("logo_url");
+        university.imagePath = json.getString("image_url");
         double meanPoints, meanPrice;
 
         if (json.isNull("mean_point")) {
@@ -208,5 +236,22 @@ public class University implements Entity {
         } else {
             return Double.toString(this.meanPoints);
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        University that = (University) o;
+
+        return name.equals(that.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

@@ -61,6 +61,12 @@ public class Region implements Entity {
         return region;
     }
 
+    public static Region getByID(SQLiteDatabase db, int id) {
+        Cursor cursor = db.rawQuery("Select * from Region Where id = ?", new String[]{Integer.toString(id)});
+        cursor.moveToNext();
+        return Region.initFromCursor(cursor);
+    }
+
     @Override
     public String toString() {
         return name;

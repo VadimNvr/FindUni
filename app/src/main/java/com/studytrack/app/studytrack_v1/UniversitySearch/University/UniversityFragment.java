@@ -92,7 +92,7 @@ public class UniversityFragment extends myFragment
     }
 
     private void initToolbar() {
-        mToolbar        = (Toolbar) fragment.findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) fragment.findViewById(R.id.toolbar);
         mToolbar.setTitle("");
         mToolbar.setNavigationIcon(R.drawable.arrow_left);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -198,7 +198,7 @@ public class UniversityFragment extends myFragment
             super.onPostExecute(result);
 
             recycler.setLayoutManager(new LinearLayoutManager(activity));
-            recycler.setAdapter(new RecyclerAdapter(university));
+            recycler.setAdapter(new RecyclerAdapter(university,activity));
             Picasso.with(activity).load(new File(university.getImagePath())).into(mHeader);
             Picasso.with(activity).load(new File(university.getLogoPath())).into(mLogo);
 

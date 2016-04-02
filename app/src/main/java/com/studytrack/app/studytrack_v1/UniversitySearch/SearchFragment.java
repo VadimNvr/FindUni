@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +30,8 @@ import java.util.concurrent.ExecutionException;
 import Entities.Region;
 import Entities.Town;
 import Entities.University;
+import Requests.FilterRequest;
+import Requests.Filters.Filter;
 import Requests.GetRegionsRequest;
 import Requests.GetTownsRequest;
 import Requests.GetUniversitiesRequest;
@@ -72,14 +73,26 @@ public class SearchFragment extends myFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initActivity();
+        List<String> params = new ArrayList<>();
+        List<Integer> marks = new ArrayList<>();
+        marks.add(1);
+        marks.add(300);
+        params.add(this.getTown().getName());
+        Filter filter = new Filter();
+        filter.addTownsFilter(params);
+        filter.addPointsFilter(marks);
+        FilterRequest request = new FilterRequest(activity,0,10,filter);
+        request.execute();
         initProgress();
         initToolbar();
         initSheetFab();
         initRecycler();
         initProgress();
         loading = false;
-        curOffset = 0; // TODO: 23.03.2016 Write it normal 
+        curOffset = 0; // TODO: 23.03.2016 Write it normal
+
         new LoadDataTask(true, getTown(), 5, 0).execute();
+
     }
 
     private void initActivity() {
@@ -144,7 +157,6 @@ public class SearchFragment extends myFragment {
                     // End has been reached
                     // Do something
 
-                    Log.i("TAG", "tag");
                     loading = true;
                     loadMoreData();
                 }
@@ -164,7 +176,7 @@ public class SearchFragment extends myFragment {
 
     private void loadMoreData() {
         Town town = getTown();
-        if(town.getCount() - curOffset < 0) {
+        if(town.getCount() - curOffset <= 0) {
             return;
         }
         new LoadDataTask(true, town, curCount, curOffset).execute();

@@ -37,6 +37,19 @@ public class LocalDataBaseDriver {
         return universities;
     }
 
+
+    public List<University> loadFilters(String sql, int count, int offset) {
+        ArrayList<University> universities = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql + " LIMIT ? OFFSET ?",
+                new String[]{Integer.toString(count),
+                        Integer.toString(offset)});
+        while (cursor.moveToNext()) {
+            Town town = Town.getByID(db, cursor.getInt(2));
+            universities.add(University.initFromCursor(cursor,town));
+        }
+        return universities;
+    }
+
     public List<University> loadLiked() {
         ArrayList<University> universities = new ArrayList<>();
         Cursor cursor = db.rawQuery("Select * from University Where liked = 1", null);

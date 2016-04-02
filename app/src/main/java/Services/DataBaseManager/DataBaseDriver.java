@@ -74,4 +74,21 @@ public class DataBaseDriver {
         }
         return result;
     }
+
+    public List<University> loadFilters(String filter,int offset,int count, AppCompatActivity activity) {
+        String url = "http://finduniv.appspot.com/filter?" + filter + "&count=" + count + "&offset=" + offset;
+        HashMap<String, String> parameters = new HashMap<>();
+
+        List<University> result = new ArrayList<>();
+        try {
+            JSONArray objects = (JSONArray) JSONParser.readJsonFromUrl(url, parameters);
+            for (int i = 0; i < objects.length() ; i++) {
+                JSONObject json = (JSONObject) objects.get(i);
+                result.add(University.initFromJSON(json, new Town(json.getString("town")), activity));
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

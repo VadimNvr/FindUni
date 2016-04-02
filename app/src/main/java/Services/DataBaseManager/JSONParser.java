@@ -28,7 +28,9 @@ public class JSONParser {
     }
 
     public static Object readJsonFromUrl(String url, Map<String, String> parameters) throws IOException, JSONException {
-        url += "?";
+        if(!parameters.isEmpty()) {
+            url += "?";
+        }
         for ( Map.Entry<String, String> entry: parameters.entrySet()) {
            url += entry.getKey()+"=" + URLEncoder.encode(entry.getValue(), "UTF-8") +"&";
         }

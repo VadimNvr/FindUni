@@ -16,9 +16,14 @@ public class Town implements Entity {
     public Town() {
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Town(String name) {
         this.name = name;
     }
+
 
     public static Town initFromCursor(Cursor cursor, Region region) {
         Town town = new Town();
@@ -36,6 +41,13 @@ public class Town implements Entity {
         town.count = json.getInt("university_count");
         town.region = region;
         return town;
+    }
+
+
+    public static Town getByID(SQLiteDatabase db, int id) {
+        Cursor cursor = db.rawQuery("Select * from Town Where id = ?", new String[]{Integer.toString(id)});
+        cursor.moveToNext();
+        return Town.initFromCursor(cursor, Region.getByID(db,id));
     }
 
     @Override
