@@ -21,6 +21,7 @@ import com.studytrack.app.studytrack_v1.Utils.Animator;
 import com.studytrack.app.studytrack_v1.myFragment;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 import Entities.University;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -75,6 +76,14 @@ public class UniversityFragment extends myFragment
 
     private void loadData() {
         university = (University) getArguments().getSerializable("data");
+        try {
+            university.loadSpecialities((AppCompatActivity)getActivity());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int i = 5;
     }
 
     private void initActivity() {

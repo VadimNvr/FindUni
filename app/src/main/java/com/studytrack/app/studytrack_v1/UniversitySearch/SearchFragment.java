@@ -30,11 +30,10 @@ import java.util.concurrent.ExecutionException;
 import Entities.Region;
 import Entities.Town;
 import Entities.University;
-import Requests.FilterRequest;
-import Requests.Filters.Filter;
 import Requests.GetRegionsRequest;
 import Requests.GetTownsRequest;
 import Requests.GetUniversitiesRequest;
+import Requests.SpecialityTypeRequest;
 
 /**
  * Created by vadim on 03.01.16.
@@ -73,16 +72,6 @@ public class SearchFragment extends myFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initActivity();
-        List<String> params = new ArrayList<>();
-        List<Integer> marks = new ArrayList<>();
-        marks.add(1);
-        marks.add(300);
-        params.add(this.getTown().getName());
-        Filter filter = new Filter();
-        filter.addTownsFilter(params);
-        filter.addPointsFilter(marks);
-        FilterRequest request = new FilterRequest(activity,0,10,filter);
-        request.execute();
         initProgress();
         initToolbar();
         initSheetFab();
@@ -90,7 +79,10 @@ public class SearchFragment extends myFragment {
         initProgress();
         loading = false;
         curOffset = 0; // TODO: 23.03.2016 Write it normal
-
+        SpecialityTypeRequest specialityTypeRequest = new SpecialityTypeRequest((AppCompatActivity)getActivity(),0,0);
+        specialityTypeRequest.execute();
+        GetRegionsRequest regionsRequest = new GetRegionsRequest((AppCompatActivity)getActivity());
+        regionsRequest.execute();
         new LoadDataTask(true, getTown(), 5, 0).execute();
 
     }

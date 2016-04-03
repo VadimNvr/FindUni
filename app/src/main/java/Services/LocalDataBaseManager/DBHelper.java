@@ -11,6 +11,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
         super(context, "mainDB", null, 1);
+
     }
 
     @Override
@@ -20,6 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
         createUniversityTable(db);
         createSpecialityTypeTable(db);
         createSpecialityTable(db);
+
     }
 
     private void createSpecialityTypeTable(SQLiteDatabase db) {
@@ -51,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "type_id integer," +
                         "price integer," +
                         "points integer," +
-                        "subjects integer," +
+                        "subjects Text," +
                         "FOREIGN KEY(university_id) REFERENCES University(id),"+
                         "FOREIGN KEY(type_id) REFERENCES SpecialityType(id)" +
                         ");");

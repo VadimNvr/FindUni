@@ -13,6 +13,7 @@ import java.util.List;
 
 import Entities.Region;
 import Entities.Speciality;
+import Entities.SpecialityType;
 import Entities.Town;
 import Entities.University;
 
@@ -36,12 +37,39 @@ public class DataBaseDriver {
         return universities;
     }
 
-    public List<Speciality> loadSpecialies(String university_name) {
+    public List<Speciality> loadSpecialies(University university, int count, int offset) {
         ArrayList<Speciality> specialities = new ArrayList<>();
-
-
-        //// TODO: 17.03.2016  implement
+        String url = "http://finduniv.appspot.com/getUniversitySpecialities";
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("count", Integer.toString(count));
+        parameters.put("offset", Integer.toString(offset));
+        parameters.put("university", university.getName());
+        try {
+            JSONArray objects = (JSONArray) JSONParser.readJsonFromUrl(url,parameters);
+            for (int i = 0; i < objects.length() ; i++) {
+                specialities.add(Speciality.initFromJson((JSONObject) objects.get(i), university));
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
         return specialities;
+    }
+
+    public List<SpecialityType> loadSpecialityTypes(int offset,int count) {
+        ArrayList<SpecialityType> specialityTypes = new ArrayList<>();
+        String url = "http://finduniv.appspot.com/getSpecialities";
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("count", Integer.toString(count));
+        parameters.put("offset", Integer.toString(offset));
+        try {
+            JSONArray objects = (JSONArray) JSONParser.readJsonFromUrl(url,parameters);
+            for (int i = 0; i < objects.length() ; i++) {
+                specialityTypes.add(SpecialityType.initFromJSON((JSONObject) objects.get(i)));
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return specialityTypes;
     }
 
     public List<Town> loadTowns(Region region) {

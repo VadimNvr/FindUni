@@ -44,8 +44,6 @@ public class FilterRequest extends Request<University> {
                 }
             }
             saveToLocal(newUniversities);
-
-
         }
         return result;
     }

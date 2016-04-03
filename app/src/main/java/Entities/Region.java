@@ -12,6 +12,9 @@ import org.json.JSONObject;
  */
 public class Region implements Entity {
 
+    String name;
+    int id;
+
     public String getName() {
         return name;
     }
@@ -43,10 +46,6 @@ public class Region implements Entity {
         }
     }
 
-
-    String name;
-    int id;
-
     public static Region initFromCursor(Cursor cursor) {
         Region region = new Region();
         region.id = cursor.getInt(0);
@@ -57,7 +56,6 @@ public class Region implements Entity {
     public static Region initFromJSON(JSONObject json) throws JSONException {
         Region region = new Region();
         region.name = json.getString("name");
-        //// TODO: 19.03.2016 add count and id
         return region;
     }
 

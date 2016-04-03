@@ -48,7 +48,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 options_holder.favourites.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        data.inverseLiked();
+                        data.inverseLiked(RecyclerAdapter.this.activity);
 
                         if(data.getLiked() == 1) {
                             Drawable img = activity.getApplicationContext().getResources().getDrawable(R.drawable.star_checked_dark);

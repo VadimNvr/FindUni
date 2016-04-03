@@ -12,6 +12,7 @@ import java.util.List;
 import Entities.Entity;
 import Entities.Region;
 import Entities.Speciality;
+import Entities.SpecialityType;
 import Entities.Town;
 import Entities.University;
 
@@ -54,19 +55,20 @@ public class LocalDataBaseDriver {
         ArrayList<University> universities = new ArrayList<>();
         Cursor cursor = db.rawQuery("Select * from University Where liked = 1", null);
         while (cursor.moveToNext()) {
-        //    universities.add(University.initFromCursor(cursor));
+            universities.add(University.initFromCursor(cursor, Town.getByID(db, cursor.getInt(2))));
         }
         return universities;
 
     }
 
-    public List<Speciality> loadSpecialies(University university) {
+    public List<Speciality> loadSpecialies(int count, int offset, University university) {
         ArrayList<Speciality> specialities = new ArrayList<>();
-        Cursor cursor = db.rawQuery("Select * from Speciality Where id_univ = ?",
-                new String[]{Integer.toString(university.getId())});
+        Cursor cursor = db.rawQuery("Select * from Speciality Where id_univ = ? LIMIT ? OFFSET ?",
+                new String[]{Integer.toString(university.getId()),
+                        Integer.toString(count), Integer.toString(offset)});
 
         while (cursor.moveToNext()) {
-            specialities.add(Speciality.initFromCursor(cursor));
+            specialities.add(Speciality.initFromCursor(cursor, university, db));
         }
         return specialities;
     }
@@ -94,5 +96,16 @@ public class LocalDataBaseDriver {
         return region;
     }
 
+
+    public List<SpecialityType> loadSpecialityTypes(int count, int offset) {
+        ArrayList<SpecialityType> specialities = new ArrayList<>();
+        Cursor cursor = db.rawQuery("Select * from SpecialityType LIMIT ? OFFSET ?",
+                new String[]{Integer.toString(count),Integer.toString(offset)});
+
+        while (cursor.moveToNext()) {
+            specialities.add(SpecialityType.initFromCursor(cursor));
+        }
+        return specialities;
+    }
 
 }

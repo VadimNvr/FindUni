@@ -29,7 +29,6 @@ public class ImageService {
         }
     }
 
-    // TODO: 14.03.2016
     public static String saveToFileFromUrl(Context context, String address) throws IOException {
 
         String resultPath = null;

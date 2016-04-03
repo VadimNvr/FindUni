@@ -6,11 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 
+import com.studytrack.app.studytrack_v1.StudyTrackApplication;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import Requests.SpecialityRequest;
 import Services.ImageService;
 
 /**
@@ -30,7 +35,7 @@ public class University implements Entity {
     String logoPath;
     String imagePath;
     int loaded;
-
+    List<Speciality> specialities;
     Activity activity;
 
     private boolean loadSpecialities = false;
@@ -125,19 +130,16 @@ public class University implements Entity {
      * @param name Name of Universoty
      * @return The obj from BD
      */
-    public static University getOrInsert(String name) {
-        // TODO: 17.03.2016 Load Obj from Local BD if no put in
-        return null;
-    }
 
 
     /**
      * Load Specialities from BD if it is no loaded before.
      */
-    public void loadSpecialities() {
-        if (!loadSpecialities) {
-
-        }
+    public void loadSpecialities(AppCompatActivity activity) throws ExecutionException, InterruptedException {
+        SpecialityRequest request = new SpecialityRequest(activity,0,100, this);
+        request.execute();
+        this.specialities = request.get();
+        loaded = 1;
     }
 
 
@@ -149,10 +151,13 @@ public class University implements Entity {
         return liked;
     }
 
-    public void inverseLiked() {
+    public void inverseLiked(Activity activity) {
         liked = ++liked % 2;
-        // TODO: 24.03.2016 save to DB
+        SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
+        db.execSQL("Update University SET is_favourite = ? WHERE id = ", new String[]{Integer.toString(this.liked),
+                Integer.toString(id)});
     }
+
     public String getLogoPath() {
         return logoPath;
     }
@@ -195,7 +200,7 @@ public class University implements Entity {
         university.site = cursor.getString(9);
         university.address = cursor.getString(10);
         university.phone = cursor.getString(11);
-        return university; // TODO: 17.03.2016
+        return university;
     }
 
     public static University initFromJSON(JSONObject json, Town town, AppCompatActivity activity) throws JSONException, IOException {
@@ -204,9 +209,6 @@ public class University implements Entity {
         university.town = town;
         university.name = json.getString("name");
         university.address = json.getString("address");
-//        university.logoPath = ImageService.saveToFileFromUrl(activity.getApplicationContext(),
-//                json.getString("logo_url"));
-//        university.imagePath = ImageService.saveToFileFromUrl(activity.getApplicationContext(), json.getString("image_url"));
         university.logoPath = json.getString("logo_url");
         university.imagePath = json.getString("image_url");
         double meanPoints, meanPrice;
@@ -254,4 +256,5 @@ public class University implements Entity {
     public int hashCode() {
         return name.hashCode();
     }
+
 }
