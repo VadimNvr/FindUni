@@ -33,7 +33,7 @@
         <item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back</item>
 
         <!-- Change background for the suggestions list view-->
-        <!-- <item name="searchSuggestionBackground">...</item> -->
+        <item name="searchSuggestionBackground">@color/backgroundColorPrimary</item>
 
         <!-- Change text color for edit text. This will also be the color of the cursor-->
         <item name="android:textColor">@android:color/black</item>
@@ -115,4 +115,16 @@
         <item name="pv_progressStyle">@style/LightColorLinearProgressDrawable</item>
     </style>
 
+    <style name="FilterAddCityButton" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="rd_backgroundColor">@android:color/transparent</item>
+
+    </style>
+
+    <style name="FilterTextView">
+        <item name="et_dividerColor">@color/colorPrimary</item>
+        <item name="et_labelEnable">true</item>
+        <item name="et_labelTextSize">12sp</item>
+        <item name="et_dividerHeight">1sp</item>
+        <item name="et_dividerPadding">3dp</item>
+    </style>
 </resources>
