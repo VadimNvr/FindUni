@@ -35,7 +35,7 @@
         android:layout_marginTop="280dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="Посмотреть все"
         android:id="@+id/show_specialities_button"
         android:layout_gravity="center_horizontal"
         android:layout_weight="67"
