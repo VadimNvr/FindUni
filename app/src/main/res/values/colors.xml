@@ -10,7 +10,8 @@
     <color name="backgroundColorDark">#000000</color>
     <color name="textColorPrimaryDark">#555555</color>
     <color name="textColorPrimaryLight">#ffffff</color>
-
+    <color name="white">#ffffff</color>
+    <color name="gray">#d3d3d3</color>
     <color name="colorPrimary">#2ea663</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorPrimaryLight">#01a500</color>

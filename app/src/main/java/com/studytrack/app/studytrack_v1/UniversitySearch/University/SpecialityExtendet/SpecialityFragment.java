@@ -15,6 +15,7 @@ import com.studytrack.app.studytrack_v1.UniversitySearch.University.SpecialityTa
 import Entities.Speciality;
 import Entities.University;
 import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.toolkit.TableDataRowColorizers;
 
 public class SpecialityFragment extends myFragment {
 
@@ -40,8 +41,11 @@ public class SpecialityFragment extends myFragment {
 
     private void initActivity() {
         activity = (AppCompatActivity) getActivity();
-        tableView       = (TableView<Speciality>) fragment.findViewById(R.id.tableView);
+        tableView = (TableView<Speciality>) fragment.findViewById(R.id.tableView);
         tableView.setColumnWeight(0,3);
+        int colorEvenRows = activity.getResources().getColor(R.color.white);
+        int colorOddRows = activity.getResources().getColor(R.color.gray);
+        tableView.setDataRowColoriser(TableDataRowColorizers.alternatingRows(colorEvenRows, colorOddRows));
     }
 
     @Override

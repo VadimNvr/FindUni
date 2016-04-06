@@ -183,9 +183,8 @@ public class RecyclerHolder {
 
         public SpecialitiesViewHolder(View itemView) {
             super(itemView);
-            tableView =(TableView<Speciality>) itemView.findViewById(R.id.tableView);
             button = (Button) itemView.findViewById(R.id.show_specialities_button);
-            tableView.setColumnWeight(0,3);
+            tableView = (TableView<Speciality>) itemView.findViewById(R.id.tableView);
         }
     }
 

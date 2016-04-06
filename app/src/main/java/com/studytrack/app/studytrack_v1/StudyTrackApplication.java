@@ -23,7 +23,7 @@ public class StudyTrackApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        deleteDatabase("mainDB");
+       // deleteDatabase("mainDB");
 
         DBHelper dbHelper = new DBHelper(this);
 

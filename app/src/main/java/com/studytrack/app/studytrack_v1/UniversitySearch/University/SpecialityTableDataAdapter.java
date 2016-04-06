@@ -1,6 +1,7 @@
 package com.studytrack.app.studytrack_v1.UniversitySearch.University;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class SpecialityTableDataAdapter extends TableDataAdapter<Speciality> {
                 renderedView = renderPoints(speciality);
                 break;
         }
-
+        ((TextView)renderedView).setTextColor(Color.BLACK);
         return renderedView;
     }
 

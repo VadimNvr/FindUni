@@ -16,6 +16,7 @@ import com.studytrack.app.studytrack_v1.UniversitySearch.University.RecyclerHold
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.SpecialityExtendet.SpecialityFragment;
 
 import Entities.University;
+import de.codecrafters.tableview.toolkit.TableDataRowColorizers;
 
 
 /**
@@ -94,7 +95,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 } else {
                     RecyclerHolder.SpecialitiesViewHolder holder1 = (RecyclerHolder.SpecialitiesViewHolder) viewHolder;
-                    holder1.tableView.setDataAdapter(new SpecialityTableDataAdapter(activity.getApplicationContext(), data.getSpecialities().subList(0,7)));
+                    holder1.tableView.setDataAdapter(new SpecialityTableDataAdapter(activity.getApplicationContext(), data.getSpecialities().subList(0, 7)));
                     holder1.tableView.setHeaderAdapter(new SpecialityTableHeaderAdapter(activity.getApplicationContext()));
                     holder1.button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -109,6 +110,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     .commit();
                         }
                     });
+                    holder1.tableView.setColumnWeight(0,5);
+                    holder1.tableView.setColumnWeight(1,2);
+                    holder1.tableView.setColumnWeight(2,2);
+                    int colorEvenRows = activity.getResources().getColor(R.color.white);
+                    int colorOddRows = activity.getResources().getColor(R.color.gray);
+                    holder1.tableView.setDataRowColoriser(TableDataRowColorizers.alternatingRows(colorEvenRows, colorOddRows));
                     break;
                 }
 

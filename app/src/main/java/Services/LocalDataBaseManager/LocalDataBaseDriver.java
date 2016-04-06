@@ -101,6 +101,15 @@ public class LocalDataBaseDriver {
         return region;
     }
 
+    public List<Town> loadTownsWithSpecifickName(String characters) {
+        ArrayList<Town> towns = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM Town WHERE name LIKE '?%';", new String[]{characters});
+        while (cursor.moveToNext()) {
+            towns.add(Town.initFromCursor(cursor, null));
+        }
+        cursor.close();
+        return towns;
+    }
 
     public List<SpecialityType> loadSpecialityTypes(int count, int offset) {
         ArrayList<SpecialityType> specialities = new ArrayList<>();

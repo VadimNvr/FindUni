@@ -43,7 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         SpecialityTypeRequest typeRequest = new SpecialityTypeRequest(context);
         typeRequest.execute();
-        typeRequest.get();
+        typeRequest.get(); // TODO: 06.04.2016 may be replace 
     }
 
     private void createSpecialityTypeTable(SQLiteDatabase db) {
