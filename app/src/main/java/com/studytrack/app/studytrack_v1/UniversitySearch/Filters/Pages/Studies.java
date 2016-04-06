@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.studytrack.app.studytrack_v1.R;
-import com.studytrack.app.studytrack_v1.myFragment;
 
 /**
  * Created by vadim on 14.01.16.

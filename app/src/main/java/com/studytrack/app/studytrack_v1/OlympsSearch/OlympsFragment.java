@@ -1,6 +1,5 @@
 package com.studytrack.app.studytrack_v1.OlympsSearch;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -9,8 +8,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.studytrack.app.studytrack_v1.R;
 import com.studytrack.app.studytrack_v1.myFragment;
+import com.studytrack.app.studytrack_v1.R;
 
 /**
  * Created by vadim on 03.01.16.

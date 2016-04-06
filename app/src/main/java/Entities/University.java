@@ -38,7 +38,6 @@ public class University implements Entity {
     List<Speciality> specialities;
     Activity activity;
 
-    private boolean loadSpecialities = false;
 
     public University() {
     }
@@ -139,7 +138,12 @@ public class University implements Entity {
         SpecialityRequest request = new SpecialityRequest(activity,0,100, this);
         request.execute();
         this.specialities = request.get();
-        loaded = 1;
+        if(loaded != 1) {
+            this.loaded = 1;
+            SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
+            db.execSQL("Update University SET is_loaded = ? WHERE id = ?", new String[]{Integer.toString(this.loaded),
+                    Integer.toString(id)});
+        }
     }
 
 
@@ -154,7 +158,7 @@ public class University implements Entity {
     public void inverseLiked(Activity activity) {
         liked = ++liked % 2;
         SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
-        db.execSQL("Update University SET is_favourite = ? WHERE id = ", new String[]{Integer.toString(this.liked),
+        db.execSQL("Update University SET is_favourite = ? WHERE id = ?", new String[]{Integer.toString(this.liked),
                 Integer.toString(id)});
     }
 
@@ -240,6 +244,9 @@ public class University implements Entity {
         }
     }
 
+    public List<Speciality> getSpecialities() {
+        return specialities;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -256,5 +263,6 @@ public class University implements Entity {
     public int hashCode() {
         return name.hashCode();
     }
+
 
 }

@@ -8,7 +8,6 @@ import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Cities;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Scores;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Specialities;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.Pages.Studies;
-import com.studytrack.app.studytrack_v1.myFragment;
 
 /**
  * Created by vadim on 10.01.16.

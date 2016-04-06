@@ -63,7 +63,7 @@ public class LocalDataBaseDriver {
 
     public List<Speciality> loadSpecialies(int count, int offset, University university) {
         ArrayList<Speciality> specialities = new ArrayList<>();
-        Cursor cursor = db.rawQuery("Select * from Speciality Where id_univ = ? LIMIT ? OFFSET ?",
+        Cursor cursor = db.rawQuery("Select * from Speciality Where university_id = ? LIMIT ? OFFSET ?",
                 new String[]{Integer.toString(university.getId()),
                         Integer.toString(count), Integer.toString(offset)});
 

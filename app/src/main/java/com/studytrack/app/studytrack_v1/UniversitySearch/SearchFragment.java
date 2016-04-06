@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.rey.material.widget.ProgressView;
 import com.studytrack.app.studytrack_v1.Fab;
+import com.studytrack.app.studytrack_v1.myFragment;
 import com.studytrack.app.studytrack_v1.R;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.FilterFragment;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniversityFragment;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
-import com.studytrack.app.studytrack_v1.myFragment;
 
 import java.util.ArrayList;
 import java.util.List;

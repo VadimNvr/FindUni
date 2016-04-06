@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -23,27 +24,42 @@ import com.studytrack.app.studytrack_v1.R;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import Entities.Speciality;
+import de.codecrafters.tableview.TableView;
+
 /**
  * Created by vadim on 28.01.16.
  */
 public class RecyclerHolder {
-    public static final int PAGES_COUNT = 3;
+    public static final int PAGES_COUNT = 4;
     public static final int OPTIONS = 0;
-    public static final int SCORES = 1;
-    public static final int CONTACTS = 2;
+    public static final int SCORES = 2;
+    public static final int CONTACTS = 3;
+    public static final int SPECIALITIES = 1;
 
-    public static ViewHolder newInstance(int page, ViewGroup viewGroup) {
+    public static ViewHolder newInstance(int page, ViewGroup viewGroup, boolean[] flags) {
 
         switch (page) {
             case OPTIONS:
                 return new OptionsViewHolder(Inflate(R.layout.uni_info_page_options, viewGroup));
+            case SPECIALITIES:
+                if(flags[0]) {
 
+                } else {
+                    return new SpecialitiesViewHolder(Inflate(R.layout.uni_info_page_specialities, viewGroup));
+                }
             case SCORES:
-                return new ScoresViewHolder(Inflate(R.layout.uni_info_page_scores, viewGroup));
+                if(flags[1]) {
 
+                }else {
+                    return new ScoresViewHolder(Inflate(R.layout.uni_info_page_scores, viewGroup));
+                }
             case CONTACTS:
-                return new ContactViewHolder(Inflate(R.layout.uni_info_page_contact, viewGroup));
+                if(flags[2]) {
 
+                } else {
+                    return new ContactViewHolder(Inflate(R.layout.uni_info_page_contact, viewGroup));
+                }
             default:
                 return null;
         }
@@ -160,6 +176,19 @@ public class RecyclerHolder {
         }
     }
 
+    public static class SpecialitiesViewHolder extends ViewHolder {
+
+        public TableView<Speciality> tableView;
+        public Button button;
+
+        public SpecialitiesViewHolder(View itemView) {
+            super(itemView);
+            tableView =(TableView<Speciality>) itemView.findViewById(R.id.tableView);
+            button = (Button) itemView.findViewById(R.id.show_specialities_button);
+            tableView.setColumnWeight(0,3);
+        }
+    }
+
     public static class PriceValueFormatter implements ValueFormatter {
         private DecimalFormat mFormat;
 
@@ -185,4 +214,6 @@ public class RecyclerHolder {
             return mFormat.format(value/1000);
         }
     }
+
+
 }

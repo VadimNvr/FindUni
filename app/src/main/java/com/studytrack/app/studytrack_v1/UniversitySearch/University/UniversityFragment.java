@@ -83,7 +83,6 @@ public class UniversityFragment extends myFragment
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        int i = 5;
     }
 
     private void initActivity() {

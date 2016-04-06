@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import com.studytrack.app.studytrack_v1.R;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.RecyclerHolder.ContactViewHolder;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.RecyclerHolder.OptionsViewHolder;
+import com.studytrack.app.studytrack_v1.UniversitySearch.University.SpecialityExtendet.SpecialityFragment;
 
 import Entities.University;
 
@@ -20,16 +23,30 @@ import Entities.University;
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     University data;
-    Activity activity;
+    AppCompatActivity activity;
+    int itemsCount = 4;
+    boolean[] flags = new boolean[3];
+
     RecyclerAdapter(University data, Activity activity) {
         this.data = data;
-        this.activity = activity;
+        this.activity = (AppCompatActivity)activity;
+        if(data.getSpecialities().isEmpty()) {
+            itemsCount--;
+            flags[0] = true;
+        }
+        if(data.getMeanPrice() == 0 || data.getMeanPrice() == 0) {
+            itemsCount--;
+            flags[1] = true;
+        }
+        if(data.getPhone().equals("null")) {
+            itemsCount--;
+            flags[2] = true;
+        }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int page) {
-
-        return RecyclerHolder.newInstance(page, parent);
+        return RecyclerHolder.newInstance(page, parent, flags);
     }
 
     @Override
@@ -48,7 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 options_holder.favourites.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        data.inverseLiked(RecyclerAdapter.this.activity);
+                            data.inverseLiked(RecyclerAdapter.this.activity);
 
                         if(data.getLiked() == 1) {
                             Drawable img = activity.getApplicationContext().getResources().getDrawable(R.drawable.star_checked_dark);
@@ -72,24 +89,56 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 });
                 break;
 
+            case RecyclerHolder.SPECIALITIES:
+                if(flags[0]) {
+
+                } else {
+                    RecyclerHolder.SpecialitiesViewHolder holder1 = (RecyclerHolder.SpecialitiesViewHolder) viewHolder;
+                    holder1.tableView.setDataAdapter(new SpecialityTableDataAdapter(activity.getApplicationContext(), data.getSpecialities().subList(0,7)));
+                    holder1.tableView.setHeaderAdapter(new SpecialityTableHeaderAdapter(activity.getApplicationContext()));
+                    holder1.button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            android.support.v4.app.Fragment fragment = new SpecialityFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("data", data);
+                            fragment.setArguments(bundle);
+                            activity.getSupportFragmentManager().beginTransaction()
+                                    .addToBackStack(null)
+                                    .replace(R.id.main_fragment, fragment)
+                                    .commit();
+                        }
+                    });
+                    break;
+                }
+
             case RecyclerHolder.SCORES:
-                ((RecyclerHolder.ScoresViewHolder) viewHolder).setValues((float)data.getMeanPoints()
-                        ,(float) data.getMeanPrice());
-                ((RecyclerHolder.ScoresViewHolder) viewHolder).animate();
-                break;
+                if(flags[1]) {
+
+                } else {
+                    ((RecyclerHolder.ScoresViewHolder) viewHolder).setValues((float) data.getMeanPoints()
+                            , (float) data.getMeanPrice());
+                    ((RecyclerHolder.ScoresViewHolder) viewHolder).animate();
+                    break;
+                }
+
 
             case RecyclerHolder.CONTACTS:
-                ContactViewHolder holder = (ContactViewHolder) viewHolder;
-                holder.address.setText(data.getAddress());
-                holder.phone.setText(data.getPhone());
-                holder.site.setText(data.getSite());
-                break;
+                if(flags[2]) {
+
+                }else {
+                    ContactViewHolder holder = (ContactViewHolder) viewHolder;
+                    holder.address.setText(data.getAddress());
+                    holder.phone.setText(data.getPhone());
+                    holder.site.setText(data.getSite());
+                    break;
+                }
         }
     }
 
     @Override
     public int getItemCount() {
-        return RecyclerHolder.PAGES_COUNT;
+        return itemsCount;
     }
 
     @Override

@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     //private enum Screen {UNIS, OLYMPS, COLLEGES}
 
-    //protected HashMap<Screen, myFragment> frags;
+    //protected HashMap<Screen, MyFragment> frags;
     FragmentManager fragmentManager;
 
     private Context ctx = this;
