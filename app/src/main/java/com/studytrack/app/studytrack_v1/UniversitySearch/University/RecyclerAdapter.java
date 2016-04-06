@@ -95,7 +95,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 } else {
                     RecyclerHolder.SpecialitiesViewHolder holder1 = (RecyclerHolder.SpecialitiesViewHolder) viewHolder;
-                    holder1.tableView.setDataAdapter(new SpecialityTableDataAdapter(activity.getApplicationContext(), data.getSpecialities().subList(0, 7)));
+                    int count = data.getSpecialities().size() > 7 ? 7 : data.getSpecialities().size();
+                    holder1.tableView.setDataAdapter(new SpecialityTableDataAdapter(activity.getApplicationContext(), data.getSpecialities().subList(0, count)));
                     holder1.tableView.setHeaderAdapter(new SpecialityTableHeaderAdapter(activity.getApplicationContext()));
                     holder1.button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -110,7 +111,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     .commit();
                         }
                     });
-                    holder1.tableView.setColumnWeight(0,5);
+                    holder1.tableView.setColumnWeight(0,4 );
                     holder1.tableView.setColumnWeight(1,2);
                     holder1.tableView.setColumnWeight(2,2);
                     int colorEvenRows = activity.getResources().getColor(R.color.white);
