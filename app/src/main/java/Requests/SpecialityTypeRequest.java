@@ -1,5 +1,6 @@
 package Requests;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ public class SpecialityTypeRequest extends Request {
 
     public SpecialityTypeRequest(AppCompatActivity activity, int offset, int count) {
         super(activity);
+        this.offset = 0;
+        this.count = Integer.MAX_VALUE;
+    }
+
+    public SpecialityTypeRequest(Context context) {
+        super(context);
         this.offset = 0;
         this.count = Integer.MAX_VALUE;
 

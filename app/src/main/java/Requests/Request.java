@@ -1,5 +1,6 @@
 package Requests;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 
@@ -18,6 +19,11 @@ public abstract class Request<T extends Entity> extends AsyncTask<Void,Void,List
 
     public Request(AppCompatActivity activity) {
         this.localDb = new LocalDataBaseDriver(activity);
+        this.db = new DataBaseDriver();
+    }
+
+    public Request(Context context) {
+        this.localDb = new LocalDataBaseDriver(context);
         this.db = new DataBaseDriver();
     }
 

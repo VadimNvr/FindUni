@@ -1,5 +1,6 @@
 package Requests;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
@@ -13,6 +14,11 @@ public class GetTownsRequest extends Request<Town> {
 
     public GetTownsRequest(AppCompatActivity activity, Region region) {
         super(activity);
+        this.region = region;
+    }
+
+    public GetTownsRequest(Context context, Region region) {
+        super(context);
         this.region = region;
     }
 

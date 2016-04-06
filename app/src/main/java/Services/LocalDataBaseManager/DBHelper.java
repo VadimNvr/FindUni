@@ -4,14 +4,24 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import Entities.Region;
+import Requests.GetRegionsRequest;
+import Requests.GetTownsRequest;
+import Requests.SpecialityTypeRequest;
+
 /**
  * Created by vadim on 31.01.16.
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+    Context context;
+
     public DBHelper(Context context) {
         super(context, "mainDB", null, 1);
-
+        this.context = context;
     }
 
     @Override
@@ -21,7 +31,19 @@ public class DBHelper extends SQLiteOpenHelper {
         createUniversityTable(db);
         createSpecialityTypeTable(db);
         createSpecialityTable(db);
+    }
 
+    public void loadData() throws ExecutionException, InterruptedException {
+        GetRegionsRequest regionsRequest = new GetRegionsRequest(context);
+        regionsRequest.execute();
+        List<Region> regions = regionsRequest.get();
+        for (Region region : regions) {
+            GetTownsRequest request = new GetTownsRequest(context, region);
+            request.execute();
+        }
+        SpecialityTypeRequest typeRequest = new SpecialityTypeRequest(context);
+        typeRequest.execute();
+        typeRequest.get();
     }
 
     private void createSpecialityTypeTable(SQLiteDatabase db) {

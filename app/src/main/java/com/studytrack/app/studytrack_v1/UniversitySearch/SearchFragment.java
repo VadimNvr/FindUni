@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.rey.material.widget.ProgressView;
 import com.studytrack.app.studytrack_v1.Fab;
-import com.studytrack.app.studytrack_v1.myFragment;
 import com.studytrack.app.studytrack_v1.R;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.FilterFragment;
 import com.studytrack.app.studytrack_v1.UniversitySearch.University.UniversityFragment;
 import com.studytrack.app.studytrack_v1.Utils.Animator;
+import com.studytrack.app.studytrack_v1.myFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,6 @@ import Entities.University;
 import Requests.GetRegionsRequest;
 import Requests.GetTownsRequest;
 import Requests.GetUniversitiesRequest;
-import Requests.SpecialityTypeRequest;
 
 /**
  * Created by vadim on 03.01.16.
@@ -79,10 +78,6 @@ public class SearchFragment extends myFragment {
         initProgress();
         loading = false;
         curOffset = 0; // TODO: 23.03.2016 Write it normal
-        SpecialityTypeRequest specialityTypeRequest = new SpecialityTypeRequest((AppCompatActivity)getActivity(),0,0);
-        specialityTypeRequest.execute();
-        GetRegionsRequest regionsRequest = new GetRegionsRequest((AppCompatActivity)getActivity());
-        regionsRequest.execute();
         new LoadDataTask(true, getTown(), 5, 0).execute();
 
     }

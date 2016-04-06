@@ -1,5 +1,6 @@
 package Services.LocalDataBaseManager;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,10 @@ public class LocalDataBaseDriver {
 
     public LocalDataBaseDriver(AppCompatActivity activity) {
         db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
+    }
+
+    public LocalDataBaseDriver(Context context) {
+        db = ((StudyTrackApplication)context).getDB();
     }
 
     public List<University> loadUniversities(Town town, int count, int offset) {

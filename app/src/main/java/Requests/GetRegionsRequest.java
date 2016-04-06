@@ -1,5 +1,6 @@
 package Requests;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class GetRegionsRequest extends Request<Region> {
 
     public GetRegionsRequest(AppCompatActivity activity) {
         super(activity);
+    }
+
+    public GetRegionsRequest(Context context) {
+        super(context);
     }
 
     @Override

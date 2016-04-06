@@ -4,13 +4,15 @@ import android.app.Application;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.concurrent.ExecutionException;
+
 import Services.LocalDataBaseManager.DBHelper;
 
 /**
  * Created by vadim on 31.01.16.
  */
 public class StudyTrackApplication extends Application {
-    private SQLiteDatabase database;
+    public SQLiteDatabase database;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -21,10 +23,19 @@ public class StudyTrackApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //deleteDatabase("mainDB");
+        deleteDatabase("mainDB");
+
         DBHelper dbHelper = new DBHelper(this);
 
         database = dbHelper.getWritableDatabase();
+
+        try {
+            dbHelper.loadData();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
