@@ -30,9 +30,11 @@ import java.util.concurrent.ExecutionException;
 import Entities.Region;
 import Entities.Town;
 import Entities.University;
+import Requests.GetFavoriteRequest;
 import Requests.GetRegionsRequest;
 import Requests.GetTownsRequest;
 import Requests.GetUniversitiesRequest;
+import Requests.Request;
 
 /**
  * Created by vadim on 03.01.16.
@@ -54,6 +56,8 @@ public class SearchFragment extends myFragment {
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
 
+
+    boolean isFavorite;
     int curCount = 10;
     int curOffset = 0;
 
@@ -62,6 +66,13 @@ public class SearchFragment extends myFragment {
         setHasOptionsMenu(true);
     }
 
+    public SearchFragment() {
+        isFavorite = false;
+    }
+
+    public SearchFragment(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup _container,
                              Bundle savedInstanceState) {
@@ -140,7 +151,7 @@ public class SearchFragment extends myFragment {
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 linearLayoutManager.findFirstVisibleItemPosition();
-                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold) && !isFavorite) {
                     // End has been reached
                     // Do something
 
@@ -163,9 +174,10 @@ public class SearchFragment extends myFragment {
 
     private void loadMoreData() {
         Town town = getTown();
-        if(town.getCount() - curOffset <= 0) {
-            return;
-        }
+        if (town.getCount() - curOffset <= 0) {
+                return;
+            }
+
         new LoadDataTask(true, town, curCount, curOffset).execute();
     }
 
@@ -239,7 +251,7 @@ public class SearchFragment extends myFragment {
         Town town;
         int count;
         int offset;
-        GetUniversitiesRequest request;
+        Request<University> request;
         RecyclerAdapter recyclerAdapter;
 
         public LoadDataTask(boolean loadFavorite, Town town, int count, int offset) {
@@ -253,7 +265,11 @@ public class SearchFragment extends myFragment {
         protected void onPreExecute() {
             super.onPreExecute();
             progress.start();
-            this.request = new GetUniversitiesRequest(activity, town, offset, count);
+            if(!isFavorite) {
+                this.request = new GetUniversitiesRequest(activity, town, offset, count);
+            } else {
+                this.request = new GetFavoriteRequest(activity);
+            }
             this.request.execute();
             recyclerAdapter = (RecyclerAdapter) university_recycler.getAdapter();
         }
@@ -266,7 +282,7 @@ public class SearchFragment extends myFragment {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
-            listItems.addAll(universities);
+                listItems.addAll(universities);
 
             if (recyclerAdapter != null) {
                 recyclerAdapter.addItems(universities);

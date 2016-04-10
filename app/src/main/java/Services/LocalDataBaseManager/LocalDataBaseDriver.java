@@ -58,7 +58,7 @@ public class LocalDataBaseDriver {
 
     public List<University> loadLiked() {
         ArrayList<University> universities = new ArrayList<>();
-        Cursor cursor = db.rawQuery("Select * from University Where liked = 1", null);
+        Cursor cursor = db.rawQuery("Select * from University Where is_favourite = 1", null);
         while (cursor.moveToNext()) {
             universities.add(University.initFromCursor(cursor, Town.getByID(db, cursor.getInt(2))));
         }
@@ -103,7 +103,7 @@ public class LocalDataBaseDriver {
 
     public List<Town> loadTownsWithSpecifickName(String characters) {
         ArrayList<Town> towns = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM Town WHERE name LIKE '?%';", new String[]{characters});
+        Cursor cursor = db.rawQuery("SELECT * FROM Town WHERE name LIKE '?';", new String[]{characters+'%'});
         while (cursor.moveToNext()) {
             towns.add(Town.initFromCursor(cursor, null));
         }

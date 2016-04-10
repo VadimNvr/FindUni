@@ -158,6 +158,7 @@ public class University implements Entity {
     public void inverseLiked(Activity activity) {
         liked = ++liked % 2;
         SQLiteDatabase db = ((StudyTrackApplication) activity.getApplicationContext()).getDB();
+
         db.execSQL("Update University SET is_favourite = ? WHERE id = ?", new String[]{Integer.toString(this.liked),
                 Integer.toString(id)});
     }

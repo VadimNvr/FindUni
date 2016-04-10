@@ -66,7 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 options_holder.favourites.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            data.inverseLiked(RecyclerAdapter.this.activity);
+                        data.inverseLiked(RecyclerAdapter.this.activity);
 
                         if(data.getLiked() == 1) {
                             Drawable img = activity.getApplicationContext().getResources().getDrawable(R.drawable.star_checked_dark);
@@ -78,6 +78,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         }
                     }
                 });
+
+                if(data.getLiked() == 1) {
+                    Drawable img = activity.getApplicationContext().getResources().getDrawable(R.drawable.star_checked_dark);
+                    options_holder.favourites.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
+                } else {
+                    Drawable img = activity.getApplicationContext().getResources().getDrawable(R.drawable.star_unchecked_dark);
+                    options_holder.favourites.setCompoundDrawablesWithIntrinsicBounds(null,img,null,null);
+                }
 
                 options_holder.map.setOnClickListener(new View.OnClickListener() {
                     @Override

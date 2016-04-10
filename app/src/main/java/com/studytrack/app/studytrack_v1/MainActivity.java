@@ -86,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                                 curFrag = new OlympsFragment();
                                 renderScreen();
                                 break;
+                            case 5:
+                                curFrag = new SearchFragment(true);
+                                renderScreen();
+                                break;
                             default:
                                 Toast.makeText(ctx, "Coming soon", Toast.LENGTH_SHORT).show();
                                 return true;
