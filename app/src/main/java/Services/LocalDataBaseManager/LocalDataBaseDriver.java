@@ -103,7 +103,7 @@ public class LocalDataBaseDriver {
 
     public List<Town> loadTownsWithSpecifickName(String characters) {
         ArrayList<Town> towns = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM Town WHERE name LIKE '?';", new String[]{characters+'%'});
+        Cursor cursor = db.rawQuery("SELECT * FROM Town WHERE name LIKE ?;", new String[]{characters+'%'});
         while (cursor.moveToNext()) {
             towns.add(Town.initFromCursor(cursor, null));
         }
