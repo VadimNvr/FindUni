@@ -52,8 +52,4 @@
 
     <dimen name="barchart_height">90dp</dimen>
 
-    <!--University filter-->
-    <dimen name="university_filter_result_list_height">700dp</dimen>
-    <dimen name="university_filter_result_list_item_height">55dp</dimen>
-
 </resources>

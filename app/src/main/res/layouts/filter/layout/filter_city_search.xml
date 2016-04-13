@@ -4,15 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/filter_search_layout"
-    android:orientation="vertical"
-    android:background="@color/backgroundColorPrimary">
+    android:orientation="vertical">
 
     <com.rey.material.widget.EditText
         style="@style/FilterTextView"
         app:et_dividerColor="@color/banana"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/search_input"
+        android:id="@+id/editText"
         android:layout_gravity="center_horizontal"
         android:hint="Введите название города"
         android:singleLine="true"
@@ -22,10 +21,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/university_filter_result_list_height"
-        android:id="@+id/results_section"
-        android:visibility="visible"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:id="@+id/results_section">
 
         <ListView
             android:layout_width="match_parent"
@@ -37,70 +34,21 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recent_section"
-        android:layout_weight="0.7">
+        android:id="@+id/recent_section">
 
-        <LinearLayout
+        <com.devspark.robototextview.widget.RobotoTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <com.rey.material.widget.EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:layout_gravity="center_horizontal"
-                android:hint="Недавние результаты"
-                android:singleLine="true"
-                android:textSize="16sp"
-                android:layout_weight="0.6"
-                android:focusable="false"
-                android:clickable="false"
-                app:et_dividerHeight="2sp"
-                app:et_dividerColor="@color/divider_clr"
-                android:enabled="false" />
-        </LinearLayout>
+            android:text="Недавние результаты"
+            android:id="@+id/recentLabel"
+            app:typeface="roboto_light"
+            android:textSize="15sp"
+            android:paddingLeft="5dp" />
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/recent_list" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="55dp">
-
-        <com.rey.material.widget.Button
-            android:id="@+id/cancel_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Отмена"
-            app:rd_enable="true"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            app:rd_backgroundColor="@color/transparent"
-            android:background="@color/transparent"
-            android:textColor="@color/neg_btn_clr" />
-
-        <com.rey.material.widget.Button
-            android:id="@+id/ok_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Принять"
-            app:rd_enable="true"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:textColor="@color/pos_btn_clr" />
-
     </LinearLayout>
 
 </LinearLayout>
