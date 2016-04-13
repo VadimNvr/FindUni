@@ -11,7 +11,7 @@
     <color name="textColorPrimaryDark">#555555</color>
     <color name="textColorPrimaryLight">#ffffff</color>
     <color name="white">#ffffff</color>
-    <color name="gray">#d0d0d0</color>
+    <color name="gray">#b1b1b1</color>
     <color name="colorPrimary">#2ea663</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorPrimaryLight">#01a500</color>
@@ -24,8 +24,8 @@
 
     <color name="toolbar_text_clr">#ffffff</color>
 
-    <color name="pos_btn_clr">@color/colorPrimary</color>
-    <color name="neg_btn_clr">#f60067</color>
+    <color name="pos_dialog_btn_clr">#00f972</color>
+    <color name="neg_dialog_btn_clr">#f60067</color>
 
     <color name="transparent_background">#2A000000</color>
     <color name="transparent">#0000</color>

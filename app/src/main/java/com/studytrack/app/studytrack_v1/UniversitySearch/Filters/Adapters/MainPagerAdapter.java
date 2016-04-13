@@ -59,8 +59,4 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return "Обучение";
         }
     }
-
-    public void initAccept() {
-
-    }
 }

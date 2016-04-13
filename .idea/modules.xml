@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/FindUni.iml" filepath="$PROJECT_DIR$/FindUni.iml" />
       <module fileurl="file://$PROJECT_DIR$/StudyTrack.iml" filepath="$PROJECT_DIR$/StudyTrack.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/studytrack_v1.iml" filepath="$PROJECT_DIR$/studytrack_v1.iml" />
     </modules>
   </component>
 </project>

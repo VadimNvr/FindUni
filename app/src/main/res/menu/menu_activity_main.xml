@@ -17,12 +17,4 @@
         android:icon="@drawable/filter_light"
         android:orderInCategory="200"
         app:showAsAction="always" />
-
-    <item
-        android:id="@+id/action_accept"
-        android:title="Принять"
-        app:showAsAction="always" />
-
-
-
 </menu>

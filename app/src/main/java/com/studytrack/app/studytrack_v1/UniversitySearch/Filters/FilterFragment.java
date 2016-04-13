@@ -25,6 +25,60 @@ public class FilterFragment extends myFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+/*
+        searchView = (MaterialSearchView) getActivity().findViewById(R.id.search_view);
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TranslateAnimation anim_tr = new TranslateAnimation(0, 0, 0,
+                        -getResources().getDimensionPixelSize(R.dimen.toolbar_height));
+
+                anim_tr.setDuration(150);
+                anim_tr.setInterpolator(AnimationUtils.loadInterpolator(getContext(), R.interpolator.msf_interpolator));
+                getActivity().findViewById(R.id.filter_screen).startAnimation(anim_tr);
+                getActivity().findViewById(R.id.filter_screen).setVisibility(View.INVISIBLE);
+                searchView.showSearch(true);
+            }
+        });
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                TranslateAnimation anim_tr = new TranslateAnimation(0, 0,
+                        -getResources().getDimensionPixelSize(R.dimen.toolbar_height), 0);
+
+                anim_tr.setDuration(150);
+                anim_tr.setInterpolator(AnimationUtils.loadInterpolator(getContext(), R.interpolator.msf_interpolator));
+                getActivity().findViewById(R.id.filter_screen).startAnimation(anim_tr);
+                getActivity().findViewById(R.id.filter_screen).setVisibility(View.VISIBLE);
+            }
+        });
+
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        */
+
+        //SearchAdapter adapter = new SearchAdapter(getActivity());
+        //searchView.setAdapter(adapter);
     }
 
     @Override
@@ -54,12 +108,11 @@ public class FilterFragment extends myFragment {
         super.onCreateOptionsMenu(menu, inflater);
         // Inflate the menu; this adds items to the action bar if it is present.
 
+        MenuItem search = menu.findItem(R.id.action_search);
         //searchView.setMenuItem(search);
 
         //search.setVisible(true);
         menu.findItem(R.id.action_filter).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(false);
-        menu.findItem(R.id.action_accept).setVisible(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Фильтры");
     }
 
