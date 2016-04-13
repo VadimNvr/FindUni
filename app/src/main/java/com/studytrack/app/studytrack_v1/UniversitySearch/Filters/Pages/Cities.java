@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.rey.material.app.BottomSheetDialog;
 import com.rey.material.widget.Button;
+import com.studytrack.app.studytrack_v1.FilterPageFragment;
 import com.studytrack.app.studytrack_v1.R;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.CitySearch.CitiesSearchActivity;
 import com.studytrack.app.studytrack_v1.UniversitySearch.Filters.CitySearch.ResultListAdapter;
@@ -24,7 +25,7 @@ import java.util.Set;
 /**
  * Created by vadim on 14.01.16.
  */
-public class Cities extends Fragment {
+public class Cities extends FilterPageFragment {
     protected Button addButton;
     protected ListView citiesList;
     protected HashSet<String> chosenCities;
@@ -63,5 +64,12 @@ public class Cities extends Fragment {
 
         chosenCities = (HashSet<String>) data.getSerializableExtra("chosen_cities");
         ((ResultListAdapter) citiesList.getAdapter()).setData(chosenCities);
+    }
+
+    @Override
+    public void initAccept() {
+        pref.edit()
+            .putStringSet("cities_filter", chosenCities)
+            .apply();
     }
 }

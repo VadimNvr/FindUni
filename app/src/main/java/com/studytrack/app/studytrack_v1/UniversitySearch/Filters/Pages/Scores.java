@@ -6,12 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.studytrack.app.studytrack_v1.FilterPageFragment;
 import com.studytrack.app.studytrack_v1.R;
 
 /**
  * Created by vadim on 14.01.16.
  */
-public class Scores extends Fragment {
+public class Scores extends FilterPageFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

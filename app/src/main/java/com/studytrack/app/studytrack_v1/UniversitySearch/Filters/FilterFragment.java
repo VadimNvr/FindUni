@@ -21,6 +21,7 @@ import com.studytrack.app.studytrack_v1.myFragment;
  */
 public class FilterFragment extends myFragment {
     protected View toolbar;
+    protected ViewPager pager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,7 @@ public class FilterFragment extends myFragment {
         toolbar = getActivity().findViewById(R.id.main_toolbar);
 
         // Initialize the ViewPager and set an adapter
-        ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
+        pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(new MainPagerAdapter(getActivity().getSupportFragmentManager()));
 
         // Bind the tabs to the ViewPager
@@ -61,6 +62,15 @@ public class FilterFragment extends myFragment {
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_accept).setVisible(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Фильтры");
+
+        menu.findItem(R.id.action_accept).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                ((MainPagerAdapter) pager.getAdapter()).initAccept();
+                getActivity().getSupportFragmentManager().popBackStack();
+                return true;
+            }
+        });
     }
 
     @Override

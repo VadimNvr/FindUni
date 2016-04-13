@@ -20,6 +20,7 @@
 
     <item
         android:id="@+id/action_accept"
+        android:visible="false"
         android:title="Принять"
         app:showAsAction="always" />
 
