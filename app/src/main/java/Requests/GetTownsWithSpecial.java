@@ -1,5 +1,6 @@
 package Requests;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
@@ -13,8 +14,8 @@ public class GetTownsWithSpecial extends Request<Town> {
 
     String characters;
 
-    public GetTownsWithSpecial(AppCompatActivity activity, String characters) {
-        super(activity);
+    public GetTownsWithSpecial(AppCompatActivity ctx, String characters) {
+        super(ctx);
         this.characters = characters;
     }
 

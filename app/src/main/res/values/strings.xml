@@ -29,5 +29,5 @@
 
     <string name="univ_list_filename">ulist.dat</string>
 
-    <string name="title_activity_city_search">CitySearchActivity</string>
+    <string name="title_activity_cities_search">CitySearchActivity</string>
 </resources>
